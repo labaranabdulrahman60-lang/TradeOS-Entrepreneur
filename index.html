@@ -14,7 +14,7 @@
             --purple:#a855f7;--purple-bg:rgba(168,85,247,0.1);--radius:10px;
         }
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;max-width:500px;margin:0 auto;padding:0 0 90px 0;line-height:1.5;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;}
+        body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;max-width:500px;margin:0 auto;padding:0 0 85px 0;line-height:1.5;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;}
         header{position:sticky;top:0;z-index:30;background:rgba(0,0,0,0.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;}
         header h1{font-size:1.1rem;font-weight:700;letter-spacing:-0.3px;}header h1 span{color:var(--blue);}
         header .ver{font-size:0.6rem;color:var(--text3);font-weight:500;}
@@ -42,12 +42,11 @@
         .modal{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:40;display:flex;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;}
         .modal-content{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;width:100%;max-width:460px;margin-top:10px;}
         .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
-        .alert-box{background:var(--yellow-bg);border:1px solid rgba(234,179,8,0.3);border-radius:8px;padding:10px;margin-bottom:6px;}.alert-box .alert-title{color:var(--yellow);font-size:0.65rem;font-weight:700;text-transform:uppercase;}
-        .insight-box{background:var(--blue-bg);border:1px solid rgba(59,130,246,0.3);border-radius:8px;padding:10px;margin-bottom:6px;}.insight-box .insight-title{color:var(--blue);font-size:0.65rem;font-weight:700;text-transform:uppercase;}
         .review-card{background:var(--surface2);border-radius:8px;padding:10px;margin-bottom:6px;}.review-card .review-title{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;margin-bottom:4px;}
         hr{border:none;border-top:1px solid var(--border);margin:10px 0;}
-        nav{position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;overflow-x:auto;padding:6px 4px 12px 4px;z-index:30;max-width:500px;margin:0 auto;scrollbar-width:none;}nav::-webkit-scrollbar{display:none;}
-        nav button{background:none;border:none;color:var(--text3);font-size:0.55rem;font-weight:600;cursor:pointer;padding:6px 5px;border-radius:6px;display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;-webkit-tap-highlight-color:transparent;}nav button.active{color:var(--blue);}nav button svg{width:16px;height:16px;}
+        nav{position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;justify-content:space-between;padding:4px 2px 10px 2px;z-index:30;max-width:500px;margin:0 auto;}
+        nav button{background:none;border:none;color:var(--text3);font-size:0.5rem;font-weight:600;cursor:pointer;padding:4px 0;border-radius:6px;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;min-width:0;-webkit-tap-highlight-color:transparent;}
+        nav button.active{color:var(--blue);}nav button svg{width:16px;height:16px;}
     </style>
 </head>
 <body>
@@ -68,10 +67,9 @@
             <div class="stat"><div class="val" id="homeCash">₦0</div><div class="lbl">Cash</div></div>
             <div class="stat"><div class="val" id="homeInventory">₦0</div><div class="lbl">Inventory</div></div>
             <div class="stat"><div class="val" id="homeReceivables">₦0</div><div class="lbl">Owed to Me</div></div>
-            <div class="stat"><div class="val" id="homeEmergency">₦0</div><div class="lbl">Emergency</div></div>
+            <div class="stat"><div class="val text-red" id="homeLiabilities">₦0</div><div class="lbl">Liabilities</div></div>
         </div>
     </div>
-
     <div class="card">
         <span class="text-sm text-gray">QUICK INSIGHTS</span>
         <div class="stat-row-3 mt-2">
@@ -80,79 +78,64 @@
             <div class="stat"><div class="val" id="homeMonthPL" style="color:var(--text);">₦0</div><div class="lbl">Month P&L</div></div>
         </div>
     </div>
-
-    <div class="card">
-        <span class="text-sm text-gray">⚠ ALERTS</span>
-        <div id="homeAlerts" class="mt-2"><p class="text-xs text-gray">All good. Keep tracking.</p></div>
-    </div>
-
-    <div class="card">
-        <span class="text-sm text-gray">RECENT ACTIVITY</span>
-        <div id="homeRecent" class="mt-2"><p class="text-gray text-xs text-center">Start logging to see activity here</p></div>
-    </div>
+    <div class="card"><span class="text-sm text-gray">⚠ ALERTS</span><div id="homeAlerts" class="mt-2"><p class="text-xs text-gray">All good. Keep tracking.</p></div></div>
+    <div class="card"><span class="text-sm text-gray">RECENT ACTIVITY</span><div id="homeRecent" class="mt-2"><p class="text-gray text-xs text-center">Start logging to see activity here</p></div></div>
 </div>
 
 <!-- ========== DECISIONS ========== -->
 <div class="page" id="page-decisions">
-    <div class="flex-between mb-3">
-        <h2 class="text-lg font-bold">Decision Engine</h2>
-        <button class="btn btn-small btn-primary" onclick="openForm('decision')">+ New</button>
-    </div>
+    <div class="flex-between mb-3"><h2 class="text-lg font-bold">Decision Engine</h2><button class="btn btn-small btn-primary" onclick="openForm('decision')">+ New</button></div>
     <p class="text-xs text-gray mb-3">Run every major purchase through here before you spend.</p>
-    <div class="chip-row mb-3">
-        <span class="chip active" onclick="filterDecisions('all')">All</span>
-        <span class="chip" onclick="filterDecisions('pending')">Pending</span>
-        <span class="chip" onclick="filterDecisions('approved')">Approved</span>
-        <span class="chip" onclick="filterDecisions('rejected')">Rejected</span>
-    </div>
+    <div class="chip-row mb-3"><span class="chip active" onclick="filterDecisions('all')">All</span><span class="chip" onclick="filterDecisions('pending')">Pending</span><span class="chip" onclick="filterDecisions('approved')">Approved</span><span class="chip" onclick="filterDecisions('rejected')">Rejected</span></div>
     <div id="decisionList"></div>
 </div>
 
 <!-- ========== INVENTORY ========== -->
 <div class="page" id="page-inventory">
-    <div class="flex-between mb-3">
-        <h2 class="text-lg font-bold">Inventory</h2>
-        <button class="btn btn-small btn-primary" onclick="openForm('inventory')">+ Add Stock</button>
-    </div>
+    <div class="flex-between mb-3"><h2 class="text-lg font-bold">Inventory</h2><button class="btn btn-small btn-primary" onclick="openForm('inventory')">+ Add Stock</button></div>
     <p class="text-xs text-gray mb-3">Track every product. Know what's selling and what's sitting.</p>
     <div id="inventoryList"></div>
 </div>
 
 <!-- ========== DEALS ========== -->
 <div class="page" id="page-deals">
-    <div class="flex-between mb-3">
-        <h2 class="text-lg font-bold">Deal Journal</h2>
-        <button class="btn btn-small btn-primary" onclick="openForm('deal')">+ New Deal</button>
-    </div>
+    <div class="flex-between mb-3"><h2 class="text-lg font-bold">Deal Journal</h2><button class="btn btn-small btn-primary" onclick="openForm('deal')">+ New Deal</button></div>
     <p class="text-xs text-gray mb-3">Log every sale. Track customers, feedback, and profit.</p>
     <div id="dealList"></div>
 </div>
 
 <!-- ========== EXPENSES ========== -->
 <div class="page" id="page-expenses">
-    <div class="flex-between mb-3">
-        <h2 class="text-lg font-bold">Expenses</h2>
-        <button class="btn btn-small btn-primary" onclick="openForm('expense')">+ Log Expense</button>
-    </div>
+    <div class="flex-between mb-3"><h2 class="text-lg font-bold">Expenses</h2><button class="btn btn-small btn-primary" onclick="openForm('expense')">+ Log Expense</button></div>
     <p class="text-xs text-gray mb-3">Track every naira. Find your leaks.</p>
-    <div class="chip-row mb-3">
-        <span class="chip active" onclick="filterExpenses('all')">All</span>
-        <span class="chip" onclick="filterExpenses('business')">Business</span>
-        <span class="chip" onclick="filterExpenses('personal')">Personal</span>
-    </div>
+    <div class="chip-row mb-3"><span class="chip active" onclick="filterExpenses('all')">All</span><span class="chip" onclick="filterExpenses('business')">Business</span><span class="chip" onclick="filterExpenses('personal')">Personal</span></div>
     <div id="expenseList"></div>
-    <div class="card mt-3">
-        <span class="text-sm text-gray">THIS MONTH SUMMARY</span>
-        <div id="expenseSummary" class="mt-2"></div>
+    <div class="card mt-3"><span class="text-sm text-gray">THIS MONTH SUMMARY</span><div id="expenseSummary" class="mt-2"></div></div>
+</div>
+
+<!-- ========== CAPITAL ========== -->
+<div class="page" id="page-capital">
+    <div class="flex-between mb-3"><h2 class="text-lg font-bold">Capital</h2><button class="btn btn-small btn-secondary" id="btnEditCapital" onclick="toggleCapitalEdit()">Edit</button></div>
+    <div class="card" id="capitalView">
+        <div class="flex-between mb-2"><span class="text-sm text-gray">NET WORTH</span><span class="text-xs text-gray" id="capitalLastUpdated"></span></div>
+        <div class="text-xl font-bold mb-3" id="capitalNetWorth">₦0</div>
+        <div id="capitalFields"></div>
+        <hr>
+        <div class="stat-row"><div class="stat"><div class="val text-green" id="capitalTotalAssets">₦0</div><div class="lbl">Total Assets</div></div><div class="stat"><div class="val text-red" id="capitalTotalLiabilities">₦0</div><div class="lbl">Total Liabilities</div></div></div>
     </div>
+    <div class="card" id="capitalEdit" style="display:none;">
+        <h4 class="mb-2 text-xs text-gray font-bold">ASSETS</h4><div id="capitalEditAssets"></div>
+        <hr><h4 class="mb-2 text-xs text-gray font-bold">LIABILITIES</h4><div id="capitalEditLiabilities"></div>
+        <button class="btn btn-primary mt-3" onclick="saveCapital()">Save & Take Snapshot</button>
+        <button class="btn btn-secondary mt-2" onclick="toggleCapitalEdit()">Cancel</button>
+    </div>
+    <div class="card mt-3"><span class="text-sm text-gray">CAPITAL GROWTH</span><div id="capitalChart" class="mt-2" style="min-height:100px;"><p class="text-gray text-xs text-center" style="padding:30px 0;">Update capital and take a snapshot to see growth.</p></div><div id="capitalHistoryList" class="mt-2"></div></div>
+    <div class="card mt-3"><span class="text-sm text-gray">ALLOCATION RULE</span><div class="stat-row mt-2"><div class="stat"><div class="val text-blue">50%</div><div class="lbl">Business</div></div><div class="stat"><div class="val">20%</div><div class="lbl">Survival</div></div><div class="stat"><div class="val">20%</div><div class="lbl">Savings</div></div><div class="stat"><div class="val">10%</div><div class="lbl">Buffer</div></div></div></div>
 </div>
 
 <!-- ========== REVIEW ========== -->
 <div class="page" id="page-review">
-    <div class="flex-between mb-3">
-        <h2 class="text-lg font-bold">Weekly Review</h2>
-        <button class="btn btn-small btn-primary" onclick="openForm('review')">+ This Week</button>
-    </div>
+    <div class="flex-between mb-3"><h2 class="text-lg font-bold">Weekly Review</h2><button class="btn btn-small btn-primary" onclick="openForm('review')">+ This Week</button></div>
     <p class="text-xs text-gray mb-3">Every week, ask: What worked? What failed? What leaked? What will I improve?</p>
     <div id="reviewList"></div>
 </div>
@@ -172,35 +155,14 @@
         <button class="btn btn-secondary mb-2" onclick="document.getElementById('importFile').click()">📤 Import Backup</button>
         <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(event)">
         <p class="text-xs text-gray mt-2" id="backupNote"></p>
-        <hr>
-        <button class="btn btn-danger" onclick="resetAll()">🗑 Reset All Data</button>
+        <hr><button class="btn btn-danger" onclick="resetAll()">🗑 Reset All Data</button>
     </div>
-    <div class="card mt-3">
-        <span class="text-sm text-gray">HOW TO USE TRADEOS</span>
-        <ol class="text-xs text-gray mt-2" style="padding-left:16px;line-height:1.8;">
-            <li><strong>Decide</strong> — Run big purchases through the Decision Engine first</li>
-            <li><strong>Stock</strong> — Log every product you buy for resale</li>
-            <li><strong>Deals</strong> — Log every sale with customer feedback</li>
-            <li><strong>Costs</strong> — Track every expense. Business AND personal.</li>
-            <li><strong>Review</strong> — Every Sunday, write what worked/failed/leaked</li>
-            <li><strong>CEO</strong> — End of month, check your numbers</li>
-        </ol>
-    </div>
-    <div class="card mt-3">
-        <span class="text-sm text-gray">CORE PRINCIPLES</span>
-        <ul class="text-xs text-gray mt-2" style="list-style:none;padding:0;">
-            <li>• What data supports this decision?</li>
-            <li>• Can I survive the worst-case outcome?</li>
-            <li>• Am I acting from evidence or emotion?</li>
-            <li>• Have I documented this?</li>
-        </ul>
-    </div>
+    <div class="card mt-3"><span class="text-sm text-gray">HOW TO USE</span><ol class="text-xs text-gray mt-2" style="padding-left:16px;line-height:1.8;"><li><strong>Decide</strong> — Run purchases through the Decision Engine first</li><li><strong>Stock</strong> — Log every product you buy for resale</li><li><strong>Deals</strong> — Log every sale with customer feedback</li><li><strong>Costs</strong> — Track every expense</li><li><strong>Capital</strong> — Update assets & liabilities monthly</li><li><strong>Review</strong> — Every Sunday: what worked/failed/leaked</li><li><strong>CEO</strong> — End of month: check your numbers</li></ol></div>
+    <div class="card mt-3"><span class="text-sm text-gray">CORE PRINCIPLES</span><ul class="text-xs text-gray mt-2" style="list-style:none;padding:0;"><li>• What data supports this decision?</li><li>• Can I survive the worst-case outcome?</li><li>• Am I acting from evidence or emotion?</li><li>• Have I documented this?</li></ul></div>
 </div>
 
 <!-- ========== MODAL ========== -->
-<div class="modal" id="genericModal" style="display:none;">
-    <div class="modal-content" id="modalContent"></div>
-</div>
+<div class="modal" id="genericModal" style="display:none;"><div class="modal-content" id="modalContent"></div></div>
 
 <!-- ========== NAVIGATION ========== -->
 <nav id="mainNav">
@@ -209,350 +171,227 @@
     <button data-page="inventory"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>Stock</button>
     <button data-page="deals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Deals</button>
     <button data-page="expenses"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Costs</button>
+    <button data-page="capital"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Capital</button>
     <button data-page="review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Review</button>
     <button data-page="analytics"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>CEO</button>
     <button data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2"/></svg>More</button>
 </nav>
 
 <script>
-// ==================== DATA ENGINE ====================
-const STORAGE_KEY = 'tradeos_entrepreneur_v1';
-let app = {
-    capital: { cash:0, emergencyFund:0, inventoryValue:0, receivables:0, payables:0 },
-    decisions: [], inventory: [], deals: [], expenses: [], reviews: [], lastBackup: null
-};
-function load(){ const r=localStorage.getItem(STORAGE_KEY); if(r){ try{ const p=JSON.parse(r); app={...app,...p}; }catch(e){} } }
-function save(){ localStorage.setItem(STORAGE_KEY,JSON.stringify(app)); }
-function nw(){ const c=app.capital; return c.cash+c.emergencyFund+c.inventoryValue+c.receivables-c.payables; }
-function fm(n){ return '₦'+Number(n).toLocaleString(); }
-function toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
-function gid(){ return 'id_'+Date.now()+'_'+Math.random().toString(36).substr(2,6); }
-
-// ==================== NAVIGATION ====================
+const STORAGE_KEY='tradeos_entrepreneur_v2';
+let app={capital:{cash:0,emergencyFund:0,inventoryValue:0,receivables:0,otherAssets:0,payables:0,liabilities:0},capitalHistory:[],decisions:[],inventory:[],deals:[],expenses:[],reviews:[],lastBackup:null};
+function load(){const r=localStorage.getItem(STORAGE_KEY);if(r){try{const p=JSON.parse(r);app={...app,...p};if(!app.capital.otherAssets)app.capital.otherAssets=0;if(!app.capital.liabilities)app.capital.liabilities=0;if(!app.capitalHistory)app.capitalHistory=[];}catch(e){}}}
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(app));}
+function totalAssets(){const c=app.capital;return c.cash+c.emergencyFund+c.inventoryValue+c.receivables+(c.otherAssets||0);}
+function totalLiabilities(){const c=app.capital;return c.payables+(c.liabilities||0);}
+function nw(){return totalAssets()-totalLiabilities();}
+function fm(n){return'₦'+Number(n).toLocaleString();}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+function gid(){return'id_'+Date.now()+'_'+Math.random().toString(36).substr(2,6);}
 function showPage(page){
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     document.querySelectorAll('#mainNav button').forEach(b=>b.classList.remove('active'));
-    const pg=document.getElementById('page-'+page); if(pg)pg.classList.add('active');
-    const btn=document.querySelector(`#mainNav button[data-page="${page}"]`); if(btn)btn.classList.add('active');
-    if(page==='home') renderHome();
-    if(page==='decisions') renderDecisions();
-    if(page==='inventory') renderInventory();
-    if(page==='deals') renderDeals();
-    if(page==='expenses') renderExpenses();
-    if(page==='review') renderReviews();
-    if(page==='analytics') renderAnalytics();
-    if(page==='settings') renderSettings();
+    const pg=document.getElementById('page-'+page);if(pg)pg.classList.add('active');
+    const btn=document.querySelector(`#mainNav button[data-page="${page}"]`);if(btn)btn.classList.add('active');
+    if(page==='home')renderHome();if(page==='decisions')renderDecisions();if(page==='inventory')renderInventory();
+    if(page==='deals')renderDeals();if(page==='expenses')renderExpenses();if(page==='capital')renderCapital();
+    if(page==='review')renderReviews();if(page==='analytics')renderAnalytics();if(page==='settings')renderSettings();
 }
-document.getElementById('mainNav').addEventListener('click',function(e){
-    const b=e.target.closest('button'); if(b&&b.dataset.page) showPage(b.dataset.page);
-});
+document.getElementById('mainNav').addEventListener('click',function(e){const b=e.target.closest('button');if(b&&b.dataset.page)showPage(b.dataset.page);});
 
-// ==================== HOME ====================
 function renderHome(){
     const c=app.capital;
-    document.getElementById('homeNetWorth').textContent=fm(nw());
-    document.getElementById('homeCash').textContent=fm(c.cash);
-    document.getElementById('homeInventory').textContent=fm(c.inventoryValue);
-    document.getElementById('homeReceivables').textContent=fm(c.receivables);
-    document.getElementById('homeEmergency').textContent=fm(c.emergencyFund);
-    // Best product
-    const prods={}; app.deals.filter(d=>d.status==='Closed').forEach(d=>{ const k=d.product||'Other'; prods[k]=(prods[k]||0)+(d.profit||0); });
-    const bestP=Object.entries(prods).sort((a,b)=>b[1]-a[1])[0];
-    document.getElementById('homeTopProduct').textContent=bestP?bestP[0]:'-';
-    // Best customer
-    const custs={}; app.deals.filter(d=>d.status==='Closed').forEach(d=>{ const k=d.customer||'Other'; custs[k]=(custs[k]||0)+(d.profit||0); });
-    const bestC=Object.entries(custs).sort((a,b)=>b[1]-a[1])[0];
-    document.getElementById('homeTopCustomer').textContent=bestC?bestC[0]:'-';
-    // Month P&L
-    const now=new Date(); const tm=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+    document.getElementById('homeNetWorth').textContent=fm(nw());document.getElementById('homeCash').textContent=fm(c.cash);
+    document.getElementById('homeInventory').textContent=fm(c.inventoryValue);document.getElementById('homeReceivables').textContent=fm(c.receivables);
+    document.getElementById('homeLiabilities').textContent=fm(totalLiabilities());
+    const prods={};app.deals.filter(d=>d.status==='Closed').forEach(d=>{const k=d.product||'Other';prods[k]=(prods[k]||0)+(d.profit||0);});
+    const bestP=Object.entries(prods).sort((a,b)=>b[1]-a[1])[0];document.getElementById('homeTopProduct').textContent=bestP?bestP[0]:'-';
+    const custs={};app.deals.filter(d=>d.status==='Closed').forEach(d=>{const k=d.customer||'Other';custs[k]=(custs[k]||0)+(d.profit||0);});
+    const bestC=Object.entries(custs).sort((a,b)=>b[1]-a[1])[0];document.getElementById('homeTopCustomer').textContent=bestC?bestC[0]:'-';
+    const now=new Date();const tm=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
     const mRev=app.deals.filter(d=>d.date&&d.date.startsWith(tm)&&d.status==='Closed').reduce((s,d)=>s+(d.profit||0),0);
     const mExp=app.expenses.filter(e=>e.date&&e.date.startsWith(tm)).reduce((s,e)=>s+e.amount,0);
-    const net=mRev-mExp; const pe=document.getElementById('homeMonthPL');
-    pe.textContent=(net>=0?'+':'')+fm(net); pe.style.color=net>=0?'var(--green)':'var(--red)';
-    // Alerts
+    const net=mRev-mExp;const pe=document.getElementById('homeMonthPL');pe.textContent=(net>=0?'+':'')+fm(net);pe.style.color=net>=0?'var(--green)':'var(--red)';
     const lowStock=app.inventory.filter(i=>i.status==='Active'&&(i.quantity||1)<3);
-    const alerts=lowStock.length?`⚠ ${lowStock.length} product(s) low on stock. Consider restocking.`:'✅ All stock levels are fine.';
-    document.getElementById('homeAlerts').innerHTML=`<p class="text-xs ${lowStock.length?'text-yellow':'text-gray'}">${alerts}</p>`;
-    // Recent
+    document.getElementById('homeAlerts').innerHTML=lowStock.length?`<p class="text-xs text-yellow">⚠ ${lowStock.length} product(s) low on stock. Restock soon.</p>`:'<p class="text-xs text-gray">✅ All stock levels are fine.</p>';
     const recent=[...app.deals.map(d=>({...d,displayTitle:'Deal: '+(d.customer||'Sale'),displayDate:d.date})),...app.inventory.map(i=>({...i,displayTitle:'Stock: '+i.product,displayDate:i.date}))].sort((a,b)=>new Date(b.displayDate||0)-new Date(a.displayDate||0)).slice(0,3);
     document.getElementById('homeRecent').innerHTML=recent.length?recent.map(r=>`<div class="row-item"><div class="flex-between"><span class="r-title">${r.displayTitle||'Entry'}</span></div><div class="r-meta">${r.displayDate?.slice(0,10)||''} · ${r.status||''}</div></div>`).join(''):'<p class="text-gray text-xs text-center">Start logging to see activity</p>';
 }
 
-// ==================== DECISIONS ====================
 let dFilter='all';
-function filterDecisions(f){ dFilter=f; renderDecisions(); }
+function filterDecisions(f){dFilter=f;renderDecisions();}
 function renderDecisions(){
     const fd=app.decisions.filter(d=>dFilter==='all'?true:d.status===dFilter);
     document.querySelectorAll('#page-decisions .chip').forEach(c=>c.classList.remove('active'));
-    const ac=document.querySelector(`#page-decisions .chip[onclick="filterDecisions('${dFilter}')"]`); if(ac)ac.classList.add('active');
-    document.getElementById('decisionList').innerHTML=fd.length?fd.map(d=>`
-        <div class="row-item" onclick="openForm('decision','${d.id}')">
-            <div class="flex-between"><span class="r-title">${d.title}</span><span class="badge badge-${d.status==='approved'?'success':d.status==='rejected'?'failed':'pending'}">${d.status}</span></div>
-            <div class="r-meta">${d.category} · ${fm(d.capitalRequired)} · ${d.date?.slice(0,10)}</div>
-        </div>`).join(''):'<p class="text-gray text-xs text-center">No decisions logged yet</p>';
+    const ac=document.querySelector(`#page-decisions .chip[onclick="filterDecisions('${dFilter}')"]`);if(ac)ac.classList.add('active');
+    document.getElementById('decisionList').innerHTML=fd.length?fd.map(d=>`<div class="row-item" onclick="openForm('decision','${d.id}')"><div class="flex-between"><span class="r-title">${d.title}</span><span class="badge badge-${d.status==='approved'?'success':d.status==='rejected'?'failed':'pending'}">${d.status}</span></div><div class="r-meta">${d.category} · ${fm(d.capitalRequired)} · ${d.date?.slice(0,10)}</div></div>`).join(''):'<p class="text-gray text-xs text-center">No decisions logged yet</p>';
 }
 
-// ==================== INVENTORY ====================
 function renderInventory(){
-    document.getElementById('inventoryList').innerHTML=app.inventory.length?app.inventory.map(i=>`
-        <div class="row-item" onclick="openForm('inventory','${i.id}')">
-            <div class="flex-between"><span class="r-title">${i.product}</span><span class="badge badge-${i.status==='Active'?'active':i.status==='Sold'?'success':'failed'}">${i.status}</span></div>
-            <div class="r-meta">Qty: ${i.quantity||1} · Cost: ${fm(i.cost)} · Sell: ${fm(i.sellPrice)} · ${i.date?.slice(0,10)}</div>
-            ${(i.quantity||1)<3&&i.status==='Active'?`<div class="text-yellow text-xs mt-1">⚠ Low stock — restock soon</div>`:''}
-        </div>`).join(''):'<p class="text-gray text-xs text-center">No inventory logged yet</p>';
+    document.getElementById('inventoryList').innerHTML=app.inventory.length?app.inventory.map(i=>`<div class="row-item" onclick="openForm('inventory','${i.id}')"><div class="flex-between"><span class="r-title">${i.product}</span><span class="badge badge-${i.status==='Active'?'active':i.status==='Sold'?'success':'failed'}">${i.status}</span></div><div class="r-meta">Qty: ${i.quantity||1} · Cost: ${fm(i.cost)} · Sell: ${fm(i.sellPrice)} · ${i.date?.slice(0,10)}</div>${(i.quantity||1)<3&&i.status==='Active'?`<div class="text-yellow text-xs mt-1">⚠ Low stock</div>`:''}</div>`).join(''):'<p class="text-gray text-xs text-center">No inventory logged yet</p>';
 }
 
-// ==================== DEALS ====================
 function renderDeals(){
-    document.getElementById('dealList').innerHTML=app.deals.length?app.deals.map(d=>`
-        <div class="row-item" onclick="openForm('deal','${d.id}')">
-            <div class="flex-between"><span class="r-title">${d.customer||'Sale'}</span><span class="badge badge-${d.status==='Closed'?'success':d.status==='Pending'?'pending':'failed'}">${d.status}</span></div>
-            <div class="r-meta">${d.product||''} · ${fm(d.sellPrice)} · ${d.date?.slice(0,10)} · ${d.customerType||''}</div>
-            ${d.profit?`<div class="text-green text-xs mt-1">Profit: +${fm(d.profit)}</div>`:''}
-            ${d.feedback?`<div class="text-blue text-xs mt-1">💬 ${d.feedback.substring(0,50)}</div>`:''}
-        </div>`).join(''):'<p class="text-gray text-xs text-center">No deals logged yet</p>';
+    document.getElementById('dealList').innerHTML=app.deals.length?app.deals.map(d=>`<div class="row-item" onclick="openForm('deal','${d.id}')"><div class="flex-between"><span class="r-title">${d.customer||'Sale'}</span><span class="badge badge-${d.status==='Closed'?'success':d.status==='Pending'?'pending':'failed'}">${d.status}</span></div><div class="r-meta">${d.product||''} · ${fm(d.sellPrice)} · ${d.date?.slice(0,10)} · ${d.customerType||''}</div>${d.profit?`<div class="text-green text-xs mt-1">Profit: +${fm(d.profit)}</div>`:''}${d.feedback?`<div class="text-blue text-xs mt-1">💬 ${d.feedback.substring(0,50)}</div>`:''}</div>`).join(''):'<p class="text-gray text-xs text-center">No deals logged yet</p>';
 }
 
-// ==================== EXPENSES ====================
 let eFilter='all';
-function filterExpenses(f){ eFilter=f; renderExpenses(); }
+function filterExpenses(f){eFilter=f;renderExpenses();}
 function renderExpenses(){
     const fe=app.expenses.filter(e=>eFilter==='all'?true:e.type===eFilter).sort((a,b)=>new Date(b.date)-new Date(a.date));
     document.querySelectorAll('#page-expenses .chip').forEach(c=>c.classList.remove('active'));
-    const ac=document.querySelector(`#page-expenses .chip[onclick="filterExpenses('${eFilter}')"]`); if(ac)ac.classList.add('active');
-    document.getElementById('expenseList').innerHTML=fe.length?fe.map(e=>`
-        <div class="row-item" onclick="openForm('expense','${e.id}')">
-            <div class="flex-between"><span class="r-title">${e.description||e.category}</span><span class="text-red font-bold">-${fm(e.amount)}</span></div>
-            <div class="r-meta">${e.type} · ${e.category} · ${e.date?.slice(0,10)}</div>
-        </div>`).join(''):'<p class="text-gray text-xs text-center">No expenses logged yet</p>';
-    // Monthly summary
-    const now=new Date(); const tm=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+    const ac=document.querySelector(`#page-expenses .chip[onclick="filterExpenses('${eFilter}')"]`);if(ac)ac.classList.add('active');
+    document.getElementById('expenseList').innerHTML=fe.length?fe.map(e=>`<div class="row-item" onclick="openForm('expense','${e.id}')"><div class="flex-between"><span class="r-title">${e.description||e.category}</span><span class="text-red font-bold">-${fm(e.amount)}</span></div><div class="r-meta">${e.type} · ${e.category} · ${e.date?.slice(0,10)}</div></div>`).join(''):'<p class="text-gray text-xs text-center">No expenses logged yet</p>';
+    const now=new Date();const tm=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
     const me=app.expenses.filter(e=>e.date&&e.date.startsWith(tm));
     const bcats={rent:0,transport:0,data:0,marketing:0,supplies:0,salary:0,other:0};
     const pcats={food:0,transport:0,data:0,random:0};
-    me.forEach(e=>{ if(e.type==='business'&&bcats[e.category]!==undefined)bcats[e.category]+=e.amount; if(e.type==='personal'&&pcats[e.category]!==undefined)pcats[e.category]+=e.amount; });
-    const btot=Object.values(bcats).reduce((a,b)=>a+b,0); const ptot=Object.values(pcats).reduce((a,b)=>a+b,0);
+    me.forEach(e=>{if(e.type==='business'&&bcats[e.category]!==undefined)bcats[e.category]+=e.amount;if(e.type==='personal'&&pcats[e.category]!==undefined)pcats[e.category]+=e.amount;});
+    const btot=Object.values(bcats).reduce((a,b)=>a+b,0);const ptot=Object.values(pcats).reduce((a,b)=>a+b,0);
     let html=`<div class="text-xs text-gray font-bold mb-1">BUSINESS (${fm(btot)})</div>`;
-    Object.entries(bcats).forEach(([k,v])=>{ html+=`<div class="flex-between text-xs"><span class="capitalize">${k}</span><span>${fm(v)}</span></div>`; });
+    Object.entries(bcats).forEach(([k,v])=>{html+=`<div class="flex-between text-xs"><span class="capitalize">${k}</span><span>${fm(v)}</span></div>`;});
     html+=`<hr><div class="text-xs text-gray font-bold mb-1">PERSONAL (${fm(ptot)})</div>`;
-    Object.entries(pcats).forEach(([k,v])=>{ html+=`<div class="flex-between text-xs"><span class="capitalize">${k}</span><span>${fm(v)}</span></div>`; });
+    Object.entries(pcats).forEach(([k,v])=>{html+=`<div class="flex-between text-xs"><span class="capitalize">${k}</span><span>${fm(v)}</span></div>`;});
     html+=`<hr><div class="flex-between text-xs font-bold"><span>TOTAL OUTFLOW</span><span class="text-red">${fm(btot+ptot)}</span></div>`;
     document.getElementById('expenseSummary').innerHTML=html;
 }
 
-// ==================== REVIEW ====================
-function renderReviews(){
-    document.getElementById('reviewList').innerHTML=app.reviews.length?app.reviews.slice().reverse().map(r=>`
-        <div class="card">
-            <div class="flex-between mb-2"><span class="font-bold text-sm">Week of ${r.date?.slice(0,10)}</span></div>
-            <div class="review-card"><div class="review-title text-green">✅ What Worked</div><p class="text-xs">${r.whatWorked||'-'}</p></div>
-            <div class="review-card"><div class="review-title text-red">❌ What Failed</div><p class="text-xs">${r.whatFailed||'-'}</p></div>
-            <div class="review-card"><div class="review-title text-yellow">💰 What Leaked Money</div><p class="text-xs">${r.whatLeaked||'-'}</p></div>
-            <div class="review-card"><div class="review-title text-blue">🔧 What to Improve</div><p class="text-xs">${r.whatImprove||'-'}</p></div>
-            <button class="btn btn-small btn-secondary mt-2" onclick="openForm('review','${r.id}')">Edit</button>
-        </div>`).join(''):'<p class="text-gray text-xs text-center">No weekly reviews yet</p>';
-}
-
-// ==================== ANALYTICS ====================
-function renderAnalytics(){
-    const closed=app.deals.filter(d=>d.status==='Closed');
-    const totalProfit=closed.reduce((s,d)=>s+(d.profit||0),0);
-    const now=new Date(); const tm=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
-    const mDeals=closed.filter(d=>d.date&&d.date.startsWith(tm));
-    const mProfit=mDeals.reduce((s,d)=>s+(d.profit||0),0);
-    const mExp=app.expenses.filter(e=>e.date&&e.date.startsWith(tm)).reduce((s,e)=>s+e.amount,0);
-    // Best product
-    const prods={}; closed.forEach(d=>{ const k=d.product||'Other'; prods[k]=(prods[k]||0)+(d.profit||0); });
-    const bestP=Object.entries(prods).sort((a,b)=>b[1]-a[1])[0];
-    // Best customer
-    const custs={}; closed.forEach(d=>{ const k=d.customer||'Other'; custs[k]=(custs[k]||0)+1; });
-    const bestC=Object.entries(custs).sort((a,b)=>b[1]-a[1])[0];
-    // Avg holding days
-    const soldInv=app.inventory.filter(i=>i.status==='Sold'&&i.holdingDays);
-    const avgHold=soldInv.length?Math.round(soldInv.reduce((s,i)=>s+(i.holdingDays||0),0)/soldInv.length):0;
-    // Win rate on decisions
-    const decs=app.decisions.filter(d=>d.status!=='pending');
-    const approved=decs.filter(d=>d.status==='approved').length;
-    const decWR=decs.length?Math.round(approved/decs.length*100):0;
-
-    document.getElementById('analyticsContent').innerHTML=`
-        <div class="card"><span class="text-sm text-gray">MONTHLY PERFORMANCE</span>
-            <div class="stat-row mt-2">
-                <div class="stat"><div class="val text-green">+${fm(mProfit)}</div><div class="lbl">Revenue</div></div>
-                <div class="stat"><div class="val text-red">-${fm(mExp)}</div><div class="lbl">Expenses</div></div>
-                <div class="stat"><div class="val" style="color:${mProfit-mExp>=0?'var(--green)':'var(--red)'}">${fm(mProfit-mExp)}</div><div class="lbl">Net</div></div>
-                <div class="stat"><div class="val">${mDeals.length}</div><div class="lbl">Deals Closed</div></div>
-            </div>
-        </div>
-        <div class="card"><span class="text-sm text-gray">BUSINESS HEALTH</span>
-            <div class="stat-row mt-2">
-                <div class="stat"><div class="val text-green">${bestP?bestP[0]:'-'}</div><div class="lbl">Best Product</div></div>
-                <div class="stat"><div class="val text-blue">${bestC?bestC[0]:'-'}</div><div class="lbl">Top Customer</div></div>
-                <div class="stat"><div class="val">${avgHold||'-'}d</div><div class="lbl">Avg Hold Time</div></div>
-                <div class="stat"><div class="val">${decWR}%</div><div class="lbl">Decision Win Rate</div></div>
-            </div>
-        </div>
-        <div class="card"><span class="text-sm text-gray">ALL-TIME</span>
-            <div class="stat-row mt-2">
-                <div class="stat"><div class="val text-green">+${fm(totalProfit)}</div><div class="lbl">Total Profit</div></div>
-                <div class="stat"><div class="val">${closed.length}</div><div class="lbl">Total Deals</div></div>
-                <div class="stat"><div class="val">${app.inventory.length}</div><div class="lbl">Products</div></div>
-                <div class="stat"><div class="val">${fm(nw())}</div><div class="lbl">Net Worth</div></div>
-            </div>
-        </div>`;
-}
-
-// ==================== SETTINGS ====================
-function renderSettings(){
-    const n=document.getElementById('backupNote');
-    if(!app.lastBackup)n.textContent='⚠ No backup yet. Export your data regularly.';
-    else{const d=Math.floor((Date.now()-new Date(app.lastBackup).getTime())/86400000);n.textContent=d>7?`⚠ Last backup: ${d} days ago`:`✅ Last backup: ${d} days ago`;}
-}
-function exportData(){
-    const b=new Blob([JSON.stringify(app,null,2)],{type:'application/json'});
-    const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='tradeos_entrepreneur_backup_'+new Date().toISOString().slice(0,10)+'.json';a.click();
-    app.lastBackup=new Date().toISOString();save();renderSettings();toast('📥 Backup exported');
-}
-function importData(e){
-    const f=e.target.files[0];if(!f)return;const r=new FileReader();
-    r.onload=function(ev){try{const d=JSON.parse(ev.target.result);if(d.capital&&d.decisions){if(confirm('Replace all current data with this backup?')){app=d;save();renderAll();toast('📤 Data imported');}}else toast('❌ Invalid file');}catch(x){toast('❌ Invalid file');}};
-    r.readAsText(f);e.target.value='';
-}
-function resetAll(){if(confirm('⚠ Delete ALL data? This cannot be undone.')){app={capital:{cash:0,emergencyFund:0,inventoryValue:0,receivables:0,payables:0},decisions:[],inventory:[],deals:[],expenses:[],reviews:[],lastBackup:null};save();renderAll();toast('🗑 All data reset');}}
-
-// ==================== FORM HANDLER ====================
-let editingId=null; let formType='';
-function openForm(type,id){
-    formType=type; editingId=id||null;
-    const modal=document.getElementById('genericModal'); const content=document.getElementById('modalContent');
-    let html=''; let title='';
-    if(type==='decision'){
-        const d=id?app.decisions.find(x=>x.id===id):null;
-        const data=d||{title:'',category:'inventory',capitalRequired:0,expectedProfit:0,maximumLoss:0,riskLevel:'medium',confidenceScore:50,supplierReliability:3,buyerAvailable:false,evidence:'',worstCase:'',recoveryPlan:'',finalDecision:'WAIT',status:'pending',lessonLearned:'',date:new Date().toISOString().slice(0,10)};
-        title=d?'Edit Decision':'New Decision';
-        html=`
-            <div class="flex-between mb-3"><h3 class="font-bold">${title}</h3><button onclick="closeModal()" style="background:none;border:none;color:var(--text2);font-size:1.5rem;cursor:pointer;">×</button></div>
-            <label>Title *</label><input type="text" id="fTitle" value="${data.title}" placeholder="e.g., Restock iPhone 13">
-            <label class="mt-2">Category</label><select id="fCategory">${['inventory','marketing','equipment','expansion','other'].map(c=>`<option ${data.category===c?'selected':''}>${c}</option>`).join('')}</select>
-            <div class="grid-2 mt-2"><div><label>Capital Required</label><input type="number" id="fCapital" value="${data.capitalRequired}"></div><div><label>Expected Profit</label><input type="number" id="fProfit" value="${data.expectedProfit}"></div></div>
-            <div class="grid-2 mt-2"><div><label>Maximum Loss</label><input type="number" id="fMaxLoss" value="${data.maximumLoss}"></div><div><label>Risk Level</label><select id="fRisk">${['low','medium','high','critical'].map(r=>`<option ${data.riskLevel===r?'selected':''}>${r}</option>`).join('')}</select></div></div>
-            <label class="mt-2">Confidence: <span id="fConfLabel">${data.confidenceScore}%</span></label>
-            <div class="flex-row"><span style="font-size:0.7rem;">0</span><input type="range" id="fConfidence" min="0" max="100" value="${data.confidenceScore}" oninput="document.getElementById('fConfLabel').textContent=this.value+'%'" style="flex:1;"><span style="font-size:0.7rem;">100</span></div>
-            <label class="mt-2">Supplier Reliability (1-5)</label><input type="number" id="fSupplierRel" value="${data.supplierReliability}" min="1" max="5">
-            <div class="flex-row mt-2"><label style="display:flex;align-items:center;gap:6px;"><input type="checkbox" id="fBuyerAvail" ${data.buyerAvailable?'checked':''}> Buyer Confirmed</label></div>
-            <label class="mt-2">Evidence</label><textarea id="fEvidence" rows="2" placeholder="What data supports this?">${data.evidence||''}</textarea>
-            <label class="mt-2">Worst Case</label><textarea id="fWorstCase" rows="2" placeholder="Can you survive this?">${data.worstCase||''}</textarea>
-            <label class="mt-2">Recovery Plan</label><textarea id="fRecovery" rows="2">${data.recoveryPlan||''}</textarea>
-            <label class="mt-2">Final Decision</label>
-            <div class="chip-row" id="fFinalBtns">
-                <span class="chip ${data.finalDecision==='BUY'?'active':''}" onclick="setFinal('BUY')">BUY</span>
-                <span class="chip ${data.finalDecision==='WAIT'?'active':''}" onclick="setFinal('WAIT')">WAIT</span>
-                <span class="chip ${data.finalDecision==='REJECT'?'active':''}" onclick="setFinal('REJECT')">REJECT</span>
-            </div>
-            ${d?`<hr><label>Status</label><select id="fStatus">${['pending','approved','rejected'].map(s=>`<option ${data.status===s?'selected':''}>${s}</option>`).join('')}</select><label class="mt-2">Lesson Learned</label><textarea id="fLesson" rows="2">${data.lessonLearned||''}</textarea>`:''}
-            <button class="btn btn-primary mt-3" onclick="saveForm()">Save Decision</button>`;
-    }else if(type==='inventory'){
-        const d=id?app.inventory.find(x=>x.id===id):null;
-        const data=d||{product:'',quantity:1,cost:0,sellPrice:0,status:'Active',supplier:'',date:new Date().toISOString().slice(0,10),holdingDays:0,notes:''};
-        title=d?'Edit Inventory':'Add Stock';
-        html=`
-            <div class="flex-between mb-3"><h3 class="font-bold">${title}</h3><button onclick="closeModal()" style="background:none;border:none;color:var(--text2);font-size:1.5rem;">×</button></div>
-            <label>Product *</label><input type="text" id="fProduct" value="${data.product}" placeholder="e.g., iPhone 12 64GB">
-            <div class="grid-3 mt-2"><div><label>Qty</label><input type="number" id="fQty" value="${data.quantity}" min="1"></div><div><label>Cost</label><input type="number" id="fCost" value="${data.cost}"></div><div><label>Sell Price</label><input type="number" id="fSell" value="${data.sellPrice}"></div></div>
-            <label class="mt-2">Supplier</label><input type="text" id="fSupplier" value="${data.supplier||''}">
-            <label class="mt-2">Status</label><select id="fStatus">${['Active','Sold','Returned','Written Off'].map(s=>`<option ${data.status===s?'selected':''}>${s}</option>`).join('')}</select>
-            <label class="mt-2">Date</label><input type="date" id="fDate" value="${data.date}">
-            ${d?`<label class="mt-2">Holding Days</label><input type="number" id="fHoldingDays" value="${data.holdingDays||0}">`:''}
-            <label class="mt-2">Notes</label><textarea id="fNotes" rows="2">${data.notes||''}</textarea>
-            <button class="btn btn-primary mt-3" onclick="saveForm()">Save</button>`;
-    }else if(type==='deal'){
-        const d=id?app.deals.find(x=>x.id===id):null;
-        const data=d||{customer:'',product:'',buyPrice:0,sellPrice:0,profit:0,status:'Pending',customerType:'New',feedback:'',date:new Date().toISOString().slice(0,10),referral:'',lesson:''};
-        title=d?'Edit Deal':'New Deal';
-        html=`
-            <div class="flex-between mb-3"><h3 class="font-bold">${title}</h3><button onclick="closeModal()" style="background:none;border:none;color:var(--text2);font-size:1.5rem;">×</button></div>
-            <label>Customer</label><input type="text" id="fCustomer" value="${data.customer}" placeholder="Customer name">
-            <label class="mt-2">Product</label><input type="text" id="fProduct" value="${data.product}" placeholder="What did you sell?">
-            <div class="grid-2 mt-2"><div><label>Buy Price</label><input type="number" id="fBuy" value="${data.buyPrice}"></div><div><label>Sell Price</label><input type="number" id="fSell" value="${data.sellPrice}"></div></div>
-            <label class="mt-2">Customer Type</label><select id="fCustType">${['New','Repeat','Wholesale','Referral'].map(c=>`<option ${data.customerType===c?'selected':''}>${c}</option>`).join('')}</select>
-            <label class="mt-2">Status</label><select id="fStatus">${['Pending','Closed','Failed','Returned'].map(s=>`<option ${data.status===s?'selected':''}>${s}</option>`).join('')}</select>
-            <label class="mt-2">Date</label><input type="date" id="fDate" value="${data.date}">
-            <label class="mt-2">Customer Feedback</label><textarea id="fFeedback" rows="2" placeholder="What did the customer say?">${data.feedback||''}</textarea>
-            <label class="mt-2">Referral Source</label><input type="text" id="fReferral" value="${data.referral||''}" placeholder="TikTok, friend, walk-in...">
-            <label class="mt-2">Lesson Learned</label><textarea id="fLesson" rows="2">${data.lesson||''}</textarea>
-            <button class="btn btn-primary mt-3" onclick="saveForm()">Save Deal</button>`;
-    }else if(type==='expense'){
-        const d=id?app.expenses.find(x=>x.id===id):null;
-        const data=d||{description:'',amount:0,type:'business',category:'other',date:new Date().toISOString().slice(0,10)};
-        title=d?'Edit Expense':'Log Expense';
-        html=`
-            <div class="flex-between mb-3"><h3 class="font-bold">${title}</h3><button onclick="closeModal()" style="background:none;border:none;color:var(--text2);font-size:1.5rem;">×</button></div>
-            <label>Description</label><input type="text" id="fDesc" value="${data.description}" placeholder="e.g., Shop rent">
-            <label class="mt-2">Amount (₦)</label><input type="number" id="fAmount" value="${data.amount}">
-            <label class="mt-2">Type</label><select id="fType" onchange="updateExpenseCategories()">${['business','personal'].map(t=>`<option ${data.type===t?'selected':''}>${t}</option>`).join('')}</select>
-            <label class="mt-2">Category</label><select id="fCategory"></select>
-            <label class="mt-2">Date</label><input type="date" id="fDate" value="${data.date}">
-            <button class="btn btn-primary mt-3" onclick="saveForm()">Save</button>`;
-        setTimeout(()=>{ document.getElementById('fType').value=data.type; updateExpenseCategories(); document.getElementById('fCategory').value=data.category; },50);
-    }else if(type==='review'){
-        const d=id?app.reviews.find(x=>x.id===id):null;
-        const data=d||{date:new Date().toISOString().slice(0,10),whatWorked:'',whatFailed:'',whatLeaked:'',whatImprove:''};
-        title=d?'Edit Review':'Weekly Review';
-        html=`
-            <div class="flex-between mb-3"><h3 class="font-bold">${title}</h3><button onclick="closeModal()" style="background:none;border:none;color:var(--text2);font-size:1.5rem;">×</button></div>
-            <label>Date</label><input type="date" id="fDate" value="${data.date}">
-            <label class="mt-2">✅ What Worked</label><textarea id="fWorked" rows="2">${data.whatWorked}</textarea>
-            <label class="mt-2">❌ What Failed</label><textarea id="fFailed" rows="2">${data.whatFailed}</textarea>
-            <label class="mt-2">💰 What Leaked Money</label><textarea id="fLeaked" rows="2">${data.whatLeaked}</textarea>
-            <label class="mt-2">🔧 What to Improve</label><textarea id="fImprove" rows="2">${data.whatImprove}</textarea>
-            <button class="btn btn-primary mt-3" onclick="saveForm()">Save Review</button>`;
+// ==================== CAPITAL ====================
+function renderCapital(){
+    const c=app.capital;const ta=totalAssets();const tl=totalLiabilities();const net=nw();
+    document.getElementById('capitalNetWorth').textContent=fm(net);
+    document.getElementById('capitalTotalAssets').textContent=fm(ta);
+    document.getElementById('capitalTotalLiabilities').textContent=fm(tl);
+    const lastSnap=app.capitalHistory&&app.capitalHistory.length>0?app.capitalHistory[app.capitalHistory.length-1].date:'';
+    document.getElementById('capitalLastUpdated').textContent=lastSnap?'Last snapshot: '+lastSnap:'No snapshot yet';
+    const assets=[{k:'cash',l:'Cash'},{k:'emergencyFund',l:'Emergency Fund'},{k:'inventoryValue',l:'Inventory Value'},{k:'receivables',l:'Receivables (Owed to Me)'},{k:'otherAssets',l:'Other Assets'}];
+    const liabilities=[{k:'payables',l:'Payables (Money I Owe)'},{k:'liabilities',l:'Other Liabilities'}];
+    let html='<h4 class="text-xs text-gray font-bold mb-1">ASSETS</h4>';
+    assets.forEach(a=>{html+=`<div class="flex-between text-sm mb-1"><span class="text-gray">${a.l}</span><span>${fm(c[a.k]||0)}</span></div>`;});
+    html+='<hr><h4 class="text-xs text-gray font-bold mb-1">LIABILITIES</h4>';
+    liabilities.forEach(l=>{html+=`<div class="flex-between text-sm mb-1"><span class="text-gray">${l.l}</span><span class="text-red">${fm(c[l.k]||0)}</span></div>`;});
+    document.getElementById('capitalFields').innerHTML=html;
+    let editAssets='';assets.forEach(a=>{editAssets+=`<label class="mt-1">${a.l}</label><input type="number" id="cap_${a.k}" value="${c[a.k]||0}">`;});
+    let editLiabilities='';liabilities.forEach(l=>{editLiabilities+=`<label class="mt-1">${l.l}</label><input type="number" id="cap_${l.k}" value="${c[l.k]||0}">`;});
+    document.getElementById('capitalEditAssets').innerHTML=editAssets;
+    document.getElementById('capitalEditLiabilities').innerHTML=editLiabilities;
+    const capHistory=app.capitalHistory||[];
+    if(capHistory.length>0){
+        const maxNW=Math.max(...capHistory.map(h=>h.netWorth),1);
+        let chartHTML='<div style="display:flex;align-items:flex-end;gap:4px;height:80px;padding:4px 0;">';
+        capHistory.slice(-12).forEach(h=>{const pct=Math.round((h.netWorth/maxNW)*100);chartHTML+=`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;" title="${h.date}: ${fm(h.netWorth)}"><div style="width:100%;background:${h.netWorth>=0?'var(--green)':'var(--red)'};height:${Math.max(pct,2)}%;border-radius:2px 2px 0 0;min-height:2px;"></div><span style="font-size:0.45rem;color:var(--text3);">${h.date.slice(5)}</span></div>`;});
+        chartHTML+='</div>';document.getElementById('capitalChart').innerHTML=chartHTML;
+        let histHTML='<div class="text-xs text-gray font-bold mt-2 mb-1">HISTORY</div>';
+        capHistory.slice().reverse().slice(0,6).forEach(h=>{histHTML+=`<div class="flex-between text-xs mb-1"><span>${h.date}</span><span class="${h.netWorth>=0?'text-green':'text-red'} font-bold">${fm(h.netWorth)}</span></div>`;});
+        document.getElementById('capitalHistoryList').innerHTML=histHTML;
     }
-    content.innerHTML=html;
-    modal.style.display='flex';
 }
-function updateExpenseCategories(){
-    const type=document.getElementById('fType')?.value||'business';
-    const cats=type==='business'?['rent','transport','data','marketing','supplies','salary','other']:['food','transport','data','random'];
-    const sel=document.getElementById('fCategory'); if(!sel)return;
-    sel.innerHTML=cats.map(c=>`<option>${c}</option>`).join('');
+function toggleCapitalEdit(){const view=document.getElementById('capitalView');const edit=document.getElementById('capitalEdit');const btn=document.getElementById('btnEditCapital');if(edit.style.display==='none'){view.style.display='none';edit.style.display='block';btn.textContent='Cancel';}else{view.style.display='block';edit.style.display='none';btn.textContent='Edit';renderCapital();}}
+function saveCapital(){
+    const c=app.capital;
+    ['cash','emergencyFund','inventoryValue','receivables','otherAssets','payables','liabilities'].forEach(k=>{c[k]=Number(document.getElementById('cap_'+k)?.value)||0;});
+    const net=nw();if(!app.capitalHistory)app.capitalHistory=[];
+    app.capitalHistory.push({date:new Date().toISOString().slice(0,10),netWorth:net,totalAssets:totalAssets(),totalLiabilities:totalLiabilities()});
+    save();renderCapital();toggleCapitalEdit();toast('✅ Capital saved & snapshot taken');
 }
-function setFinal(v){ document.querySelectorAll('#fFinalBtns .chip').forEach(c=>c.classList.remove('active')); const b=document.querySelector(`#fFinalBtns .chip[onclick="setFinal('${v}')"]`); if(b)b.classList.add('active'); }
-function closeModal(){ document.getElementById('genericModal').style.display='none'; editingId=null; formType=''; }
+
+function renderReviews(){
+    document.getElementById('reviewList').innerHTML=app.reviews.length?app.reviews.slice().reverse().map(r=>`<div class="card"><div class="flex-between mb-2"><span class="font-bold text-sm">Week of ${r.date?.slice(0,10)}</span></div><div class="review-card"><div class="review-title text-green">✅ What Worked</div><p class="text-xs">${r.whatWorked||'-'}</p></div><div class="review-card"><div class="review-title text-red">❌ What Failed</div><p class="text-xs">${r.whatFailed||'-'}</p></div><div class="review-card"><div class="review-title text-yellow">💰 What Leaked Money</div><p class="text-xs">${r.whatLeaked||'-'}</p></div><div class="review-card"><div class="review-title text-blue">🔧 What to Improve</div><p class="text-xs">${r.whatImprove||'-'}</p></div><button class="btn btn-small btn-secondary mt-2" onclick="openForm('review','${r.id}')">Edit</button></div>`).join(''):'<p class="text-gray text-xs text-center">No weekly reviews yet</p>';
+}
+
+function renderAnalytics(){
+    const closed=app.deals.filter(d=>d.status==='Closed');const totalProfit=closed.reduce((s,d)=>s+(d.profit||0),0);
+    const now=new Date();const tm=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+    const mDeals=closed.filter(d=>d.date&&d.date.startsWith(tm));const mProfit=mDeals.reduce((s,d)=>s+(d.profit||0),0);
+    const mExp=app.expenses.filter(e=>e.date&&e.date.startsWith(tm)).reduce((s,e)=>s+e.amount,0);
+    const prods={};closed.forEach(d=>{const k=d.product||'Other';prods[k]=(prods[k]||0)+(d.profit||0);});
+    const bestP=Object.entries(prods).sort((a,b)=>b[1]-a[1])[0];
+    const custs={};closed.forEach(d=>{const k=d.customer||'Other';custs[k]=(custs[k]||0)+1;});
+    const bestC=Object.entries(custs).sort((a,b)=>b[1]-a[1])[0];
+    const soldInv=app.inventory.filter(i=>i.status==='Sold'&&i.holdingDays);const avgHold=soldInv.length?Math.round(soldInv.reduce((s,i)=>s+(i.holdingDays||0),0)/soldInv.length):0;
+    const decs=app.decisions.filter(d=>d.status!=='pending');const approved=decs.filter(d=>d.status==='approved').length;
+    const decWR=decs.length?Math.round(approved/decs.length*100):0;
+    const capHistory=app.capitalHistory||[];const capGrowth=capHistory.length>=2?capHistory[capHistory.length-1].netWorth-capHistory[0].netWorth:0;
+    const capGrowthPct=capHistory.length>=2&&capHistory[0].netWorth>0?Math.round((capGrowth/capHistory[0].netWorth)*100):0;
+    const ta=totalAssets();const tl=totalLiabilities();const net=nw();
+    let chartHTML='';
+    if(capHistory.length>0){const maxNW=Math.max(...capHistory.map(h=>h.netWorth),1);chartHTML='<div style="display:flex;align-items:flex-end;gap:4px;height:80px;padding:4px 0;">';capHistory.slice(-12).forEach(h=>{const pct=Math.round((h.netWorth/maxNW)*100);chartHTML+=`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;" title="${h.date}: ${fm(h.netWorth)}"><div style="width:100%;background:${h.netWorth>=0?'var(--green)':'var(--red)'};height:${Math.max(pct,2)}%;border-radius:2px 2px 0 0;min-height:2px;"></div><span style="font-size:0.45rem;color:var(--text3);">${h.date.slice(5)}</span></div>`;}chartHTML+='</div>';}else{chartHTML='<p class="text-gray text-xs text-center" style="padding:20px 0;">Update capital in the Capital tab to see growth.</p>';}
+    let historyHTML='';if(capHistory.length>0){historyHTML='<div class="text-xs text-gray font-bold mt-2 mb-1">SNAPSHOTS</div>';capHistory.slice().reverse().slice(0,5).forEach(h=>{historyHTML+=`<div class="flex-between text-xs mb-1"><span>${h.date}</span><span class="${h.netWorth>=0?'text-green':'text-red'} font-bold">${fm(h.netWorth)}</span></div>`;});}
+    document.getElementById('analyticsContent').innerHTML=`
+        <div class="card"><span class="text-sm text-gray">MONTHLY PERFORMANCE</span><div class="stat-row mt-2"><div class="stat"><div class="val text-green">+${fm(mProfit)}</div><div class="lbl">Revenue</div></div><div class="stat"><div class="val text-red">-${fm(mExp)}</div><div class="lbl">Expenses</div></div><div class="stat"><div class="val" style="color:${mProfit-mExp>=0?'var(--green)':'var(--red)'}">${fm(mProfit-mExp)}</div><div class="lbl">Net</div></div><div class="stat"><div class="val">${mDeals.length}</div><div class="lbl">Deals Closed</div></div></div></div>
+        <div class="card"><span class="text-sm text-gray">CAPITAL GROWTH ${capGrowthPct!==0?`<span class="text-xs ${capGrowth>=0?'text-green':'text-red'}">(${capGrowth>=0?'+':''}${capGrowthPct}%)</span>`:''}</span>${chartHTML}${historyHTML}</div>
+        <div class="card"><span class="text-sm text-gray">BALANCE SHEET</span><div class="stat-row mt-2"><div class="stat"><div class="val text-green">${fm(ta)}</div><div class="lbl">Assets</div></div><div class="stat"><div class="val text-red">${fm(tl)}</div><div class="lbl">Liabilities</div></div><div class="stat"><div class="val" style="color:${net>=0?'var(--green)':'var(--red)'}">${fm(net)}</div><div class="lbl">Net Worth</div></div><div class="stat"><div class="val">${fm(app.capital.cash+app.capital.emergencyFund)}</div><div class="lbl">Available</div></div></div></div>
+        <div class="card"><span class="text-sm text-gray">BUSINESS HEALTH</span><div class="stat-row mt-2"><div class="stat"><div class="val text-green">${bestP?bestP[0]:'-'}</div><div class="lbl">Best Product</div></div><div class="stat"><div class="val text-blue">${bestC?bestC[0]:'-'}</div><div class="lbl">Top Customer</div></div><div class="stat"><div class="val">${avgHold||'-'}d</div><div class="lbl">Avg Hold</div></div><div class="stat"><div class="val">${decWR}%</div><div class="lbl">Dec Win Rate</div></div></div></div>
+        <div class="card"><span class="text-sm text-gray">ALL-TIME</span><div class="stat-row mt-2"><div class="stat"><div class="val text-green">+${fm(totalProfit)}</div><div class="lbl">Profit</div></div><div class="stat"><div class="val">${closed.length}</div><div class="lbl">Deals</div></div><div class="stat"><div class="val">${app.inventory.length}</div><div class="lbl">Products</div></div><div class="stat"><div class="val">${app.reviews.length}</div><div class="lbl">Reviews</div></div></div></div>`;
+}
+
+function renderSettings(){const n=document.getElementById('backupNote');if(!app.lastBackup)n.textContent='⚠ No backup yet. Export your data regularly.';else{const d=Math.floor((Date.now()-new Date(app.lastBackup).getTime())/86400000);n.textContent=d>7?`⚠ Last backup: ${d} days ago`:`✅ Last backup: ${d} days ago`;}}
+function exportData(){const b=new Blob([JSON.stringify(app,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='tradeos_backup_'+new Date().toISOString().slice(0,10)+'.json';a.click();app.lastBackup=new Date().toISOString();save();renderSettings();toast('📥 Exported');}
+function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=function(ev){try{const d=JSON.parse(ev.target.result);if(d.capital&&d.decisions){if(confirm('Replace all data?')){app=d;save();renderAll();toast('📤 Imported');}}else toast('❌ Invalid');}catch(x){toast('❌ Invalid');}};r.readAsText(f);e.target.value='';}
+function resetAll(){if(confirm('Delete ALL data?')){app={capital:{cash:0,emergencyFund:0,inventoryValue:0,receivables:0,otherAssets:0,payables:0,liabilities:0},capitalHistory:[],decisions:[],inventory:[],deals:[],expenses:[],reviews:[],lastBackup:null};save();renderAll();toast('🗑 Reset');}}
+
+let editingId=null;let formType='';
+function openForm(type,id){
+    formType=type;editingId=id||null;const modal=document.getElementById('genericModal');const content=document.getElementById('modalContent');let html='';let title='';
+    if(type==='decision'){
+        const d=id?app.decisions.find(x=>x.id===id):null;const data=d||{title:'',category:'inventory',capitalRequired:0,expectedProfit:0,maximumLoss:0,riskLevel:'medium',confidenceScore:50,supplierReliability:3,buyerAvailable:false,evidence:'',worstCase:'',recoveryPlan:'',finalDecision:'WAIT',status:'pending',lessonLearned:'',date:new Date().toISOString().slice(0,10)};
+        title=d?'Edit Decision':'New Decision';
+        html=`<div class="flex-between mb-3"><h3 class="font-bold">${title}</h3><button onclick="closeModal()" style="background:none;border:none;color:var(--text2);font-size:1.5rem;">×</button></div><label>Title *</label><input type="text" id="fTitle" value="${data.title}"><label class="mt-2">Category</label><select id="fCategory">${['inventory','marketing','equipment','expansion','other'].map(c=>`<option ${data.category===c?'selected':''}>${c}</option>`).join('')}</select><div class="grid-2 mt-2"><div><label>Capital Required</label><input type="number" id="fCapital" value="${data.capitalRequired}"></div><div><label>Expected Profit</label><input type="number" id="fProfit" value="${data.expectedProfit}"></div></div><div class="grid-2 mt-2"><div><label>Maximum Loss</label><input type="number" id="fMaxLoss" value="${data.maximumLoss}"></div><div><label>Risk Level</label><select id="fRisk">${['low','medium','high','critical'].map(r=>`<option ${data.riskLevel===r?'selected':''}>${r}</option>`).join('')}</select></div></div><label class="mt-2">Confidence: <span id="fConfLabel">${data.confidenceScore}%</span></label><div class="flex-row"><span style="font-size:0.7rem;">0</span><input type="range" id="fConfidence" min="0" max="100" value="${data.confidenceScore}" oninput="document.getElementById('fConfLabel').textContent=this.value+'%'" style="flex:1;"><span style="font-size:0.7rem;">100</span></div><label class="mt-2">Supplier Reliability (1-5)</label><input type="number" id="fSupplierRel" value="${data.supplierReliability}" min="1" max="5"><div class="flex-row mt-2"><label style="display:flex;align-items:center;gap:6px;"><input type="checkbox" id="fBuyerAvail" ${data.buyerAvailable?'checked':''}> Buyer Confirmed</label></div><label class="mt-2">Evidence</label><textarea id="fEvidence" rows="2">${data.evidence||''}</textarea><label class="mt-2">Worst Case</label><textarea id="fWorstCase" rows="2">${data.worstCase||''}</textarea><label class="mt-2">Recovery Plan</label><textarea id="fRecovery" rows="2">${data.recoveryPlan||''}</textarea><label class="mt-2">Final Decision</label><div class="chip-row" id="fFinalBtns"><span class="chip ${data.finalDecision==='BUY'?'active':''}" onclick="setFinal('BUY')">BUY</span><span class="chip ${data.finalDecision==='WAIT'?'active':''}" onclick="setFinal('WAIT')">WAIT</span><span class="chip ${data.finalDecision==='REJECT'?'active':''}" onclick="setFinal('REJECT')">REJECT</span></div>${d?`<hr><label>Status</label><select id="fStatus">${['pending','approved','rejected'].map(s=>`<option ${data.status===s?'selected':''}>${s}</option>`).join('')}</select><label class="mt-2">Lesson Learned</label><textarea id="fLesson" rows="2">${data.lessonLearned||''}</textarea>`:''}<button class="btn btn-primary mt-3" onclick="saveForm()">Save</button>`;
+    }else if(type==='inventory'){
+        const d=id?app.inventory.find(x=>x.id===id):null;const data=d||{product:'',quantity:1,cost:0,sellPrice:0,status:'Active',supplier:'',date:new Date().toISOString().slice(0,10),holdingDays:0,notes:''};
+        title=d?'Edit Inventory':'Add Stock';
+        html=`<div class="flex-between mb-3"><h3 class="font-bold">${title}</h3><button onclick="closeModal()" style="background:none;border:none;color:var(--text2);font-size:1.5rem;">×</button></div><label>Product *</label><input type="text" id="fProduct" value="${data.product}"><div class="grid-3 mt-2"><div><label>Qty</label><input type="number" id="fQty" value="${data.quantity}" min="1"></div><div><label>Cost</label><input type="number" id="fCost" value="${data.cost}"></div><div><label>Sell Price</label><input type="number" id="fSell" value="${data.sellPrice}"></div></div><label class="mt-2">Supplier</label><input type="text" id="fSupplier" value="${data.supplier||''}"><label class="mt-2">Status</label><select id="fStatus">${['Active','Sold','Returned','Written Off'].map(s=>`<option ${data.status===s?'selected':''}>${s}</option>`).join('')}</select><label class="mt-2">Date</label><input type="date" id="fDate" value="${data.date}">${d?`<label class="mt-2">Holding Days</label><input type="number" id="fHoldingDays" value="${data.holdingDays||0}">`:''}<label class="mt-2">Notes</label><textarea id="fNotes" rows="2">${data.notes||''}</textarea><button class="btn btn-primary mt-3" onclick="saveForm()">Save</button>`;
+    }else if(type==='deal'){
+        const d=id?app.deals.find(x=>x.id===id):null;const data=d||{customer:'',product:'',buyPrice:0,sellPrice:0,profit:0,status:'Pending',customerType:'New',feedback:'',date:new Date().toISOString().slice(0,10),referral:'',lesson:''};
+        title=d?'Edit Deal':'New Deal';
+        html=`<div class="flex-between mb-3"><h3 class="font-bold">${title}</h3><button onclick="closeModal()" style="background:none;border:none;color:var(--text2);font-size:1.5rem;">×</button></div><label>Customer</label><input type="text" id="fCustomer" value="${data.customer}"><label class="mt-2">Product</label><input type="text" id="fProduct" value="${data.product}"><div class="grid-2 mt-2"><div><label>Buy Price</label><input type="number" id="fBuy" value="${data.buyPrice}"></div><div><label>Sell Price</label><input type="number" id="fSell" value="${data.sellPrice}"></div></div><label class="mt-2">Customer Type</label><select id="fCustType">${['New','Repeat','Wholesale','Referral'].map(c=>`<option ${data.customerType===c?'selected':''}>${c}</option>`).join('')}</select><label class="mt-2">Status</label><select id="fStatus">${['Pending','Closed','Failed','Returned'].map(s=>`<option ${data.status===s?'selected':''}>${s}</option>`).join('')}</select><label class="mt-2">Date</label><input type="date" id="fDate" value="${data.date}"><label class="mt-2">Customer Feedback</label><textarea id="fFeedback" rows="2">${data.feedback||''}</textarea><label class="mt-2">Referral Source</label><input type="text" id="fReferral" value="${data.referral||''}"><label class="mt-2">Lesson Learned</label><textarea id="fLesson" rows="2">${data.lesson||''}</textarea><button class="btn btn-primary mt-3" onclick="saveForm()">Save</button>`;
+    }else if(type==='expense'){
+        const d=id?app.expenses.find(x=>x.id===id):null;const data=d||{description:'',amount:0,type:'business',category:'other',date:new Date().toISOString().slice(0,10)};
+        title=d?'Edit Expense':'Log Expense';
+        html=`<div class="flex-between mb-3"><h3 class="font-bold">${title}</h3><button onclick="closeModal()" style="background:none;border:none;color:var(--text2);font-size:1.5rem;">×</button></div><label>Description</label><input type="text" id="fDesc" value="${data.description}"><label class="mt-2">Amount (₦)</label><input type="number" id="fAmount" value="${data.amount}"><label class="mt-2">Type</label><select id="fType" onchange="updateExpenseCategories()">${['business','personal'].map(t=>`<option ${data.type===t?'selected':''}>${t}</option>`).join('')}</select><label class="mt-2">Category</label><select id="fCategory"></select><label class="mt-2">Date</label><input type="date" id="fDate" value="${data.date}"><button class="btn btn-primary mt-3" onclick="saveForm()">Save</button>`;
+        setTimeout(()=>{document.getElementById('fType').value=data.type;updateExpenseCategories();document.getElementById('fCategory').value=data.category;},50);
+    }else if(type==='review'){
+        const d=id?app.reviews.find(x=>x.id===id):null;const data=d||{date:new Date().toISOString().slice(0,10),whatWorked:'',whatFailed:'',whatLeaked:'',whatImprove:''};
+        title=d?'Edit Review':'Weekly Review';
+        html=`<div class="flex-between mb-3"><h3 class="font-bold">${title}</h3><button onclick="closeModal()" style="background:none;border:none;color:var(--text2);font-size:1.5rem;">×</button></div><label>Date</label><input type="date" id="fDate" value="${data.date}"><label class="mt-2">✅ What Worked</label><textarea id="fWorked" rows="2">${data.whatWorked}</textarea><label class="mt-2">❌ What Failed</label><textarea id="fFailed" rows="2">${data.whatFailed}</textarea><label class="mt-2">💰 What Leaked Money</label><textarea id="fLeaked" rows="2">${data.whatLeaked}</textarea><label class="mt-2">🔧 What to Improve</label><textarea id="fImprove" rows="2">${data.whatImprove}</textarea><button class="btn btn-primary mt-3" onclick="saveForm()">Save</button>`;
+    }
+    content.innerHTML=html;modal.style.display='flex';
+}
+function updateExpenseCategories(){const type=document.getElementById('fType')?.value||'business';const cats=type==='business'?['rent','transport','data','marketing','supplies','salary','other']:['food','transport','data','random'];const sel=document.getElementById('fCategory');if(!sel)return;sel.innerHTML=cats.map(c=>`<option>${c}</option>`).join('');}
+function setFinal(v){document.querySelectorAll('#fFinalBtns .chip').forEach(c=>c.classList.remove('active'));const b=document.querySelector(`#fFinalBtns .chip[onclick="setFinal('${v}')"]`);if(b)b.classList.add('active');}
+function closeModal(){document.getElementById('genericModal').style.display='none';editingId=null;formType='';}
 function saveForm(){
-    const g=(id)=>document.getElementById(id)?.value||''; const gn=(id)=>Number(document.getElementById(id)?.value)||0; const gc=(id)=>document.getElementById(id)?.checked||false;
+    const g=(id)=>document.getElementById(id)?.value||'';const gn=(id)=>Number(document.getElementById(id)?.value)||0;const gc=(id)=>document.getElementById(id)?.checked||false;
     if(formType==='decision'){
-        const fe=document.querySelector('#fFinalBtns .chip.active'); const fd=fe?fe.textContent.trim():'WAIT';
+        const fe=document.querySelector('#fFinalBtns .chip.active');const fd=fe?fe.textContent.trim():'WAIT';
         const obj={title:g('fTitle'),category:g('fCategory'),capitalRequired:gn('fCapital'),expectedProfit:gn('fProfit'),maximumLoss:gn('fMaxLoss'),riskLevel:g('fRisk'),confidenceScore:Number(document.getElementById('fConfidence')?.value)||50,supplierReliability:gn('fSupplierRel'),buyerAvailable:gc('fBuyerAvail'),evidence:g('fEvidence'),worstCase:g('fWorstCase'),recoveryPlan:g('fRecovery'),finalDecision:fd,date:new Date().toISOString().slice(0,10)};
-        if(!obj.title){ toast('Title required'); return; }
-        if(editingId){ const i=app.decisions.findIndex(x=>x.id===editingId); if(i>=0){ obj.status=g('fStatus'); obj.lessonLearned=g('fLesson'); app.decisions[i]={...app.decisions[i],...obj}; } }
-        else{ app.decisions.unshift({...obj,id:gid(),status:'pending'}); }
+        if(!obj.title){toast('Title required');return;}
+        if(editingId){const i=app.decisions.findIndex(x=>x.id===editingId);if(i>=0){obj.status=g('fStatus');obj.lessonLearned=g('fLesson');app.decisions[i]={...app.decisions[i],...obj};}}
+        else{app.decisions.unshift({...obj,id:gid(),status:'pending'});}
     }else if(formType==='inventory'){
         const obj={product:g('fProduct'),quantity:gn('fQty')||1,cost:gn('fCost'),sellPrice:gn('fSell'),status:g('fStatus'),supplier:g('fSupplier'),date:g('fDate'),notes:g('fNotes')};
-        if(!obj.product){ toast('Product required'); return; }
-        if(editingId){ const i=app.inventory.findIndex(x=>x.id===editingId); if(i>=0){ obj.holdingDays=gn('fHoldingDays'); app.inventory[i]={...app.inventory[i],...obj}; } }
-        else{ app.inventory.unshift({...obj,id:gid(),holdingDays:0}); }
+        if(!obj.product){toast('Product required');return;}
+        if(editingId){const i=app.inventory.findIndex(x=>x.id===editingId);if(i>=0){obj.holdingDays=gn('fHoldingDays');app.inventory[i]={...app.inventory[i],...obj};}}
+        else{app.inventory.unshift({...obj,id:gid(),holdingDays:0});}
     }else if(formType==='deal'){
         const obj={customer:g('fCustomer'),product:g('fProduct'),buyPrice:gn('fBuy'),sellPrice:gn('fSell'),profit:gn('fSell')-gn('fBuy'),status:g('fStatus'),customerType:g('fCustType'),feedback:g('fFeedback'),date:g('fDate'),referral:g('fReferral'),lesson:g('fLesson')};
-        if(!obj.customer&&!obj.product){ toast('Customer or product required'); return; }
-        if(editingId){ const i=app.deals.findIndex(x=>x.id===editingId); if(i>=0)app.deals[i]={...app.deals[i],...obj}; }
-        else{ app.deals.unshift({...obj,id:gid()}); }
+        if(!obj.customer&&!obj.product){toast('Customer or product required');return;}
+        if(editingId){const i=app.deals.findIndex(x=>x.id===editingId);if(i>=0)app.deals[i]={...app.deals[i],...obj};}
+        else{app.deals.unshift({...obj,id:gid()});}
     }else if(formType==='expense'){
         const obj={description:g('fDesc'),amount:gn('fAmount'),type:g('fType'),category:g('fCategory'),date:g('fDate')};
-        if(!obj.amount){ toast('Amount required'); return; }
-        if(editingId){ const i=app.expenses.findIndex(x=>x.id===editingId); if(i>=0)app.expenses[i]={...app.expenses[i],...obj}; }
-        else{ app.expenses.unshift({...obj,id:gid()}); }
+        if(!obj.amount){toast('Amount required');return;}
+        if(editingId){const i=app.expenses.findIndex(x=>x.id===editingId);if(i>=0)app.expenses[i]={...app.expenses[i],...obj};}
+        else{app.expenses.unshift({...obj,id:gid()});}
     }else if(formType==='review'){
         const obj={date:g('fDate'),whatWorked:g('fWorked'),whatFailed:g('fFailed'),whatLeaked:g('fLeaked'),whatImprove:g('fImprove')};
-        if(editingId){ const i=app.reviews.findIndex(x=>x.id===editingId); if(i>=0)app.reviews[i]={...app.reviews[i],...obj}; }
-        else{ app.reviews.unshift({...obj,id:gid()}); }
+        if(editingId){const i=app.reviews.findIndex(x=>x.id===editingId);if(i>=0)app.reviews[i]={...app.reviews[i],...obj};}
+        else{app.reviews.unshift({...obj,id:gid()});}
     }
-    save(); closeModal(); renderAll(); toast('✅ Saved');
+    save();closeModal();renderAll();toast('✅ Saved');
 }
-
-function renderAll(){ renderHome(); renderDecisions(); renderInventory(); renderDeals(); renderExpenses(); renderReviews(); renderAnalytics(); renderSettings(); }
-
-// ==================== INIT ====================
-load(); renderAll(); showPage('home');
+function renderAll(){renderHome();renderDecisions();renderInventory();renderDeals();renderExpenses();renderCapital();renderReviews();renderAnalytics();renderSettings();}
+load();renderAll();showPage('home');
 </script>
 </body>
 </html>
