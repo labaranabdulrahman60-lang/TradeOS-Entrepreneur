@@ -117,25 +117,28 @@
     </div>
 </div>
 
-<!-- CAPITAL (NEW TAB) -->
+<!-- CAPITAL (NEW UPGRADED TAB) -->
 <div class="page" id="page-capital">
-    <div class="flex-between mb-2"><span class="section-title">💼 Capital & Assets</span></div>
-    <div class="card">
-        <div class="text-sm text-gray mb-2">Set your initial starting balances here. <b>Every deal and expense will auto-update your numbers from this point.</b></div>
-        <label>Starting Cash (Bank + Wallet)</label>
-        <input type="number" id="capitalStartingCash" value="0">
-        <label class="mt-2">Starting Savings</label>
-        <input type="number" id="capitalStartingSavings" value="0">
-        <button class="btn btn-primary mt-3" onclick="setCapitalBase()">💾 Set Base & Recalculate</button>
+    <div class="flex-between mb-2">
+        <span class="section-title">💼 Capital</span>
+        <button class="btn btn-small btn-secondary" onclick="openForm('capital')">Edit</button>
     </div>
+    
     <div class="card">
-        <div class="flex-between"><span class="text-gray">Current Cash</span><span id="capitalDisplayCash" class="text-green font-bold">₦0</span></div>
-        <div class="flex-between mt-1"><span class="text-gray">Inventory Value</span><span id="capitalDisplayInv" class="text-blue font-bold">₦0</span></div>
-        <div class="flex-between mt-1"><span class="text-gray">Savings</span><span id="capitalDisplaySav" class="text-yellow font-bold">₦0</span></div>
+        <div class="text-sm font-bold mb-3" id="capNetWorth" style="color:var(--text);">₦0</div>
+        
+        <div class="flex-between text-sm mt-1"><span class="text-gray">Cash</span><span id="capCash" class="text-green font-bold">₦0</span></div>
+        <div class="flex-between text-sm mt-1"><span class="text-gray">Savings</span><span id="capSavings" class="text-yellow font-bold">₦0</span></div>
+        <div class="flex-between text-sm mt-1"><span class="text-gray">Inventory Value</span><span id="capInventory" class="text-blue font-bold">₦0</span></div>
+        <div class="flex-between text-sm mt-1"><span class="text-gray">Receivables</span><span id="capReceivables" class="text-gray font-bold">₦0</span></div>
+        <div class="flex-between text-sm mt-1"><span class="text-gray">Payables</span><span id="capPayables" class="text-red font-bold">-₦0</span></div>
+        <div class="flex-between text-sm mt-1"><span class="text-gray">Liabilities</span><span id="capLiabilities" class="text-red font-bold">-₦0</span></div>
+        
         <hr>
-        <div class="flex-between font-bold text-lg"><span>Net Worth</span><span id="capitalDisplayNW">₦0</span></div>
-        <div class="text-xs text-gray mt-2 text-center">Net Worth = Cash + Savings + Inventory - Debts</div>
+        <div class="flex-between font-bold text-sm mt-1"><span class="text-gray">TOTAL NET WORTH</span><span id="capTotalNW" class="text-green font-bold">₦0</span></div>
+        <div class="text-xs text-gray mt-3 text-center">Tap "Edit" to manually adjust balances. Inventory is auto-calculated from your stock.</div>
     </div>
+
     <div class="section-title mt-3">📊 Net Worth History</div>
     <div id="capitalHistoryList" class="mt-2"></div>
 </div>
@@ -177,7 +180,7 @@
 
 <script>
 const K='tradeos_final_v3';let app={capital:{cash:0,savings:0,startingCash:0,startingSavings:0,inventoryValue:0,receivables:0,otherAssets:0,payables:0,liabilities:0},capitalHistory:[],decisions:[],inventory:[],deals:[],expenses:[],reviews:[],lastBackup:null};
-function load(){const r=localStorage.getItem(K);if(r){try{const p=JSON.parse(r);app={...app,...p};if(!app.capital.savings)app.capital.savings=0;if(!app.capital.startingCash)app.capital.startingCash=0;if(!app.capital.startingSavings)app.capital.startingSavings=0;if(!app.capital.otherAssets)app.capital.otherAssets=0;if(!app.capital.liabilities)app.capital.liabilities=0;if(!app.capitalHistory)app.capitalHistory=[];}catch(e){}}}
+function load(){const r=localStorage.getItem(K);if(r){try{const p=JSON.parse(r);app={...app,...p};if(!app.capital.savings)app.capital.savings=0;if(!app.capital.startingCash)app.capital.startingCash=0;if(!app.capital.startingSavings)app.capital.startingSavings=0;if(!app.capital.receivables)app.capital.receivables=0;if(!app.capital.payables)app.capital.payables=0;if(!app.capital.otherAssets)app.capital.otherAssets=0;if(!app.capital.liabilities)app.capital.liabilities=0;if(!app.capitalHistory)app.capitalHistory=[];}catch(e){}}}
 function save(){localStorage.setItem(K,JSON.stringify(app));}
 function ta(){const c=app.capital;return c.cash+c.savings+c.inventoryValue+c.receivables+(c.otherAssets||0);}
 function tl(){const c=app.capital;return c.payables+(c.liabilities||0);}
@@ -210,6 +213,7 @@ function recalculateCapital(){
     app.capital.savings = startSav;
     const invVal = app.inventory.filter(i=>i.status==='Active').reduce((s,i)=>s+(i.cost*(i.quantity||1)),0);
     app.capital.inventoryValue = invVal;
+    
     // Snapshots for history
     const today = new Date().toISOString().slice(0,10);
     if(!app.capitalHistory) app.capitalHistory = [];
@@ -219,13 +223,25 @@ function recalculateCapital(){
     }
 }
 
-function setCapitalBase(){
-    app.capital.startingCash = Number(document.getElementById('capitalStartingCash').value)||0;
-    app.capital.startingSavings = Number(document.getElementById('capitalStartingSavings').value)||0;
+// --- CAPITAL EDIT LOGIC ---
+function saveCapitalEdit(){
+    const newCash = Number(document.getElementById('editCapCash')?.value)||0;
+    const newSav = Number(document.getElementById('editCapSav')?.value)||0;
+    const totalProfit = app.deals.filter(d=>d.status==='Closed').reduce((s,d)=>s+(d.profit||0),0);
+    const totalExpenses = app.expenses.reduce((s,e)=>s+e.amount,0);
+    // Automatically re-calculate the base so future profits and expenses add onto her manual edits
+    app.capital.startingCash = newCash - totalProfit + totalExpenses;
+    app.capital.startingSavings = newSav;
+    app.capital.receivables = Number(document.getElementById('editCapRec')?.value)||0;
+    app.capital.payables = Number(document.getElementById('editCapPay')?.value)||0;
+    app.capital.otherAssets = Number(document.getElementById('editCapOther')?.value)||0;
+    app.capital.liabilities = Number(document.getElementById('editCapLiab')?.value)||0;
+    
     recalculateCapital();
     save();
+    closeModal();
     renderAll();
-    toast('✅ Base set & capital updated!');
+    toast('✅ Capital updated successfully!');
 }
 
 // --- MODALS & STATS ---
@@ -326,12 +342,14 @@ function rh(){
 }
 
 function rcap(){
-    document.getElementById('capitalStartingCash').value = app.capital.startingCash||0;
-    document.getElementById('capitalStartingSavings').value = app.capital.startingSavings||0;
-    document.getElementById('capitalDisplayCash').textContent = fm(app.capital.cash);
-    document.getElementById('capitalDisplayInv').textContent = fm(app.capital.inventoryValue);
-    document.getElementById('capitalDisplaySav').textContent = fm(app.capital.savings);
-    const net=nw(); const nwEl=document.getElementById('capitalDisplayNW'); nwEl.textContent=fm(net); nwEl.style.color=net>=0?'var(--green)':'var(--red)';
+    document.getElementById('capNetWorth').textContent = fm(nw());
+    document.getElementById('capCash').textContent = fm(app.capital.cash);
+    document.getElementById('capSavings').textContent = fm(app.capital.savings);
+    document.getElementById('capInventory').textContent = fm(app.capital.inventoryValue);
+    document.getElementById('capReceivables').textContent = fm(app.capital.receivables||0);
+    document.getElementById('capPayables').textContent = fm(app.capital.payables||0);
+    document.getElementById('capLiabilities').textContent = fm(app.capital.liabilities||0);
+    const net=nw(); const nwEl=document.getElementById('capTotalNW'); nwEl.textContent=fm(net); nwEl.style.color=net>=0?'var(--green)':'var(--red)';
     const hist=app.capitalHistory||[]; let hh='';
     hist.slice().reverse().slice(0,6).forEach(h=>{hh+='<div class="flex-between text-xs mb-1" style="line-height:1.8;"><span>'+h.date+'</span><span class="'+(h.netWorth>=0?'text-green':'text-red')+' font-bold">'+fm(h.netWorth)+'</span></div>';});
     document.getElementById('capitalHistoryList').innerHTML=hh||'<p class="text-gray text-xs text-center">Save a snapshot to see your trend</p>';
@@ -407,6 +425,20 @@ function resetAll(){if(confirm('Delete ALL data?')){app={capital:{cash:0,savings
 let eid=null;let ft='';
 function openForm(type,id,prefill=null){
     ft=type;eid=id||null;const c=document.getElementById('modalContent');let h='';
+    if(type==='capital'){
+        const cap = app.capital;
+        h='<div class="flex-between mb-3"><h3 class="font-bold">Edit Capital</h3><button onclick="closeModal()" style="background:none;border:none;color:var(--text2);font-size:1.5rem;">×</button></div>';
+        h+='<p class="text-xs text-gray mb-3">Manually update your balances below. Your future sales and expenses will automatically add/subtract from here!</p>';
+        h+='<label>Cash on Hand</label><input type="number" id="editCapCash" value="'+cap.cash+'">';
+        h+='<label class="mt-2">Savings</label><input type="number" id="editCapSav" value="'+cap.savings+'">';
+        h+='<label class="mt-2">Receivables (Money owed to you)</label><input type="number" id="editCapRec" value="'+(cap.receivables||0)+'">';
+        h+='<label class="mt-2">Payables (Money you owe)</label><input type="number" id="editCapPay" value="'+(cap.payables||0)+'">';
+        h+='<label class="mt-2">Other Assets</label><input type="number" id="editCapOther" value="'+(cap.otherAssets||0)+'">';
+        h+='<label class="mt-2">Other Liabilities</label><input type="number" id="editCapLiab" value="'+(cap.liabilities||0)+'">';
+        h+='<div class="text-xs text-yellow mt-3">💡 Inventory Value is automatically calculated from your stock, so it cannot be edited here.</div>';
+        h+='<button class="btn btn-primary mt-3" onclick="saveCapitalEdit()">Save Changes</button>';
+        c.innerHTML=h;document.getElementById('genericModal').style.display='flex'; return;
+    }
     if(type==='decision'){const d=id?app.decisions.find(x=>x.id===id):(prefill||{});const dt=d||{title:'',capitalRequired:0,expectedProfit:0,maximumLoss:0,riskLevel:'medium',confidenceScore:50,buyerAvailable:false,worstCase:'',recoveryPlan:'',finalDecision:'WAIT',status:'pending',lessonLearned:''};
     h='<div class="flex-between mb-3"><h3 class="font-bold">'+(d.id?'Edit':'New')+' Decision</h3><button onclick="closeModal()" style="background:none;border:none;color:var(--text2);font-size:1.5rem;">×</button></div><label>What are you buying? *</label><input type="text" id="fTitle" value="'+dt.title+'"><div class="grid-2 mt-2"><div><label>Cost</label><input type="number" id="fCapital" value="'+dt.capitalRequired+'"></div><div><label>Expected Profit</label><input type="number" id="fProfit" value="'+dt.expectedProfit+'"></div></div><div class="grid-2 mt-2"><div><label>Max Loss</label><input type="number" id="fMaxLoss" value="'+dt.maximumLoss+'"></div><div><label>Risk</label><select id="fRisk">'+['low','medium','high'].map(r=>'<option '+(dt.riskLevel===r?'selected':'')+'>'+r+'</option>').join('')+'</select></div></div><label class="mt-2">Confidence: <span id="fConfLabel">'+dt.confidenceScore+'%</span></label><input type="range" id="fConfidence" min="0" max="100" value="'+dt.confidenceScore+'" oninput="document.getElementById(\'fConfLabel\').textContent=this.value+\'%\'"><div class="flex-row mt-2"><label style="display:flex;align-items:center;gap:6px;"><input type="checkbox" id="fBuyerAvail" '+(dt.buyerAvailable?'checked':'')+'> Buyer Confirmed</label></div><label class="mt-2">Worst Case</label><textarea id="fWorstCase" rows="2">'+(dt.worstCase||'')+'</textarea><label class="mt-2">Recovery Plan</label><textarea id="fRecovery" rows="2">'+(dt.recoveryPlan||'')+'</textarea><label class="mt-2">Decision</label><div class="chip-row" id="fFinal"><span class="chip '+(dt.finalDecision==='BUY'?'active':'')+'" onclick="sf(\'BUY\')">🟢 BUY</span><span class="chip '+(dt.finalDecision==='WAIT'?'active':'')+'" onclick="sf(\'WAIT\')">🟡 WAIT</span><span class="chip '+(dt.finalDecision==='REJECT'?'active':'')+'" onclick="sf(\'REJECT\')">🔴 REJECT</span></div>'+(d.id?'<hr><label>Status</label><select id="fStatus">'+['pending','approved','rejected'].map(s=>'<option '+(dt.status===s?'selected':'')+'>'+s+'</option>').join('')+'</select><label class="mt-2">Lesson</label><textarea id="fLesson" rows="2">'+(dt.lessonLearned||'')+'</textarea>':'')+'<button class="btn btn-primary mt-3" onclick="saveForm()">Save</button>';}
     else if(type==='inventory'){const d=id?app.inventory.find(x=>x.id===id):(prefill||{});const dt=d||{product:'',quantity:1,cost:0,sellPrice:0,status:'Active',supplier:'',purchaseDate:new Date().toISOString().slice(0,10)};
