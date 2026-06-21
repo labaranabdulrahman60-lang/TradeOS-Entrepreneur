@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>TradeOS</title>
+    <title>TradeOS - Prettythingkhairat</title>
     <style>
         :root{--bg:#050505;--surface:#111;--surface2:#18181b;--border:#27272a;--text:#fff;--text2:#a1a1aa;--text3:#52525b;--blue:#3b82f6;--green:#22c55e;--red:#ef4444;--yellow:#eab308;--radius:12px;}
         *{margin:0;padding:0;box-sizing:border-box;}
@@ -61,7 +61,7 @@
 
 <!-- HOME -->
 <div class="page active" id="page-home">
-    <div class="flex-between mb-2"><div><div class="text-lg font-bold">Good morning 👋</div><div class="text-xs text-gray">Here's what's happening today.</div></div></div>
+    <div class="flex-between mb-2"><div><div class="text-lg font-bold">Good morning 👋</div><div class="text-xs text-gray">Here's what's happening with Prettythingkhairat.</div></div></div>
     
     <div class="stat-row-3 mb-2">
         <div class="stat" onclick="openStatModal('revenue')"><div class="val text-green" id="homeRev">₦0</div><div class="lbl">Revenue</div></div>
@@ -72,22 +72,22 @@
     <div class="card text-center">
         <div class="flex-between mb-1"><span class="text-xs text-gray">CEO SCORE</span><span class="text-xs text-blue" id="scoreLevel">Excellent</span></div>
         <div class="score-circle" onclick="showScoreBreakdown()"><span class="sc" id="homeScore">-</span></div>
-        <div class="text-xs text-gray mt-2">Click to see breakdown</div>
+        <div class="text-xs text-gray mt-2">Tap to see breakdown</div>
     </div>
 
     <div class="card">
         <div class="flex-between mb-2"><span class="text-sm text-gray" onclick="openStatModal('networth')" style="cursor:pointer;"><u>Net Worth</u></span><span class="text-xs text-yellow" id="homeNWChange">+0%</span></div>
         <div class="text-xl font-bold" id="homeNW" style="color:var(--text);">₦0</div>
         <div class="stat-row mt-3">
-            <div class="stat" onclick="openStatModal('cash')"><div class="val" id="homeCash">₦0</div><div class="lbl">Cash</div></div>
+            <div class="stat" onclick="openStatModal('cash')"><div class="val" id="homeCash">₦0</div><div class="lbl">Cash on Hand</div></div>
+            <div class="stat" onclick="openStatModal('savings')"><div class="val" id="homeSavings">₦0</div><div class="lbl">Savings</div></div>
             <div class="stat" onclick="openStatModal('inventory')"><div class="val" id="homeInventory">₦0</div><div class="lbl">Inventory</div></div>
-            <div class="stat"><div class="val text-green" id="homeAssets">₦0</div><div class="lbl">Assets</div></div>
-            <div class="stat"><div class="val text-red" id="homeLiabilities">₦0</div><div class="lbl">Liabilities</div></div>
+            <div class="stat"><div class="val text-red" id="homeLiabilities">₦0</div><div class="lbl">Debts</div></div>
         </div>
     </div>
 
     <div class="card"><span class="text-sm text-gray">⚠ Money Leak Detector</span><div id="homeAlerts" class="mt-2"><p class="text-xs text-gray">No leaks detected.</p></div></div>
-    <div class="card"><span class="text-sm text-gray">Recent Activity</span><div id="homeRecent" class="mt-2"><p class="text-gray text-xs text-center">Start logging</p></div></div>
+    <div class="card"><span class="text-sm text-gray">Recent Activity</span><div id="homeRecent" class="mt-2"><p class="text-gray text-xs text-center">Start logging your first sale or expense</p></div></div>
 </div>
 
 <!-- DECIDE -->
@@ -104,9 +104,9 @@
         <button class="btn btn-small btn-primary mb-2" onclick="openForm('inventory')">+ Add Stock</button>
         <div id="inventoryList"></div>
     </div>
-    <div class="collapsible flex-between mt-3" onclick="toggleSection('deal')"><span class="section-title">🤝 Deals</span><span class="arrow">▶</span></div>
+    <div class="collapsible flex-between mt-3" onclick="toggleSection('deal')"><span class="section-title">🤝 Sales</span><span class="arrow">▶</span></div>
     <div class="section-content" id="sec-deal">
-        <button class="btn btn-small btn-primary mb-2" onclick="openForm('deal')">+ New Deal</button>
+        <button class="btn btn-small btn-primary mb-2" onclick="openForm('deal')">+ New Sale</button>
         <div id="dealList"></div>
     </div>
     <div class="collapsible flex-between mt-3" onclick="toggleSection('exp')"><span class="section-title">💰 Expenses</span><span class="arrow">▶</span></div>
@@ -115,6 +115,29 @@
         <div id="expenseList"></div>
         <div class="card mt-2"><span class="text-xs text-gray font-bold">MONTHLY SPENDING</span><div id="expenseSummary" class="mt-1"></div></div>
     </div>
+</div>
+
+<!-- CAPITAL (NEW TAB) -->
+<div class="page" id="page-capital">
+    <div class="flex-between mb-2"><span class="section-title">💼 Capital & Assets</span></div>
+    <div class="card">
+        <div class="text-sm text-gray mb-2">Set your initial starting balances here. <b>Every deal and expense will auto-update your numbers from this point.</b></div>
+        <label>Starting Cash (Bank + Wallet)</label>
+        <input type="number" id="capitalStartingCash" value="0">
+        <label class="mt-2">Starting Savings</label>
+        <input type="number" id="capitalStartingSavings" value="0">
+        <button class="btn btn-primary mt-3" onclick="setCapitalBase()">💾 Set Base & Recalculate</button>
+    </div>
+    <div class="card">
+        <div class="flex-between"><span class="text-gray">Current Cash</span><span id="capitalDisplayCash" class="text-green font-bold">₦0</span></div>
+        <div class="flex-between mt-1"><span class="text-gray">Inventory Value</span><span id="capitalDisplayInv" class="text-blue font-bold">₦0</span></div>
+        <div class="flex-between mt-1"><span class="text-gray">Savings</span><span id="capitalDisplaySav" class="text-yellow font-bold">₦0</span></div>
+        <hr>
+        <div class="flex-between font-bold text-lg"><span>Net Worth</span><span id="capitalDisplayNW">₦0</span></div>
+        <div class="text-xs text-gray mt-2 text-center">Net Worth = Cash + Savings + Inventory - Debts</div>
+    </div>
+    <div class="section-title mt-3">📊 Net Worth History</div>
+    <div id="capitalHistoryList" class="mt-2"></div>
 </div>
 
 <!-- TIMELINE & REVIEWS -->
@@ -148,14 +171,15 @@
     <button class="active" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Home</button>
     <button data-page="decisions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Decide</button>
     <button data-page="business"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>Business</button>
+    <button data-page="capital"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Capital</button>
     <button data-page="timeline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Timeline</button>
 </nav>
 
 <script>
-const K='tradeos_final_v3';let app={capital:{cash:0,emergencyFund:0,inventoryValue:0,receivables:0,otherAssets:0,payables:0,liabilities:0},capitalHistory:[],decisions:[],inventory:[],deals:[],expenses:[],reviews:[],lastBackup:null};
-function load(){const r=localStorage.getItem(K);if(r){try{const p=JSON.parse(r);app={...app,...p};if(!app.capital.otherAssets)app.capital.otherAssets=0;if(!app.capital.liabilities)app.capital.liabilities=0;if(!app.capitalHistory)app.capitalHistory=[];}catch(e){}}}
+const K='tradeos_final_v3';let app={capital:{cash:0,savings:0,startingCash:0,startingSavings:0,inventoryValue:0,receivables:0,otherAssets:0,payables:0,liabilities:0},capitalHistory:[],decisions:[],inventory:[],deals:[],expenses:[],reviews:[],lastBackup:null};
+function load(){const r=localStorage.getItem(K);if(r){try{const p=JSON.parse(r);app={...app,...p};if(!app.capital.savings)app.capital.savings=0;if(!app.capital.startingCash)app.capital.startingCash=0;if(!app.capital.startingSavings)app.capital.startingSavings=0;if(!app.capital.otherAssets)app.capital.otherAssets=0;if(!app.capital.liabilities)app.capital.liabilities=0;if(!app.capitalHistory)app.capitalHistory=[];}catch(e){}}}
 function save(){localStorage.setItem(K,JSON.stringify(app));}
-function ta(){const c=app.capital;return c.cash+c.emergencyFund+c.inventoryValue+c.receivables+(c.otherAssets||0);}
+function ta(){const c=app.capital;return c.cash+c.savings+c.inventoryValue+c.receivables+(c.otherAssets||0);}
 function tl(){const c=app.capital;return c.payables+(c.liabilities||0);}
 function nw(){return ta()-tl();}
 function fm(n){return'₦'+Number(n).toLocaleString();}
@@ -168,23 +192,47 @@ function sp(page){
     const pg=document.getElementById('page-'+page);if(pg)pg.classList.add('active');
     const btn=document.querySelector('#mainNav button[data-page="'+page+'"]');if(btn)btn.classList.add('active');
     if(page==='home')rh();if(page==='decisions')rd();if(page==='business'){ri();rdl();re();}
-    if(page==='timeline'){rt();rr();rl();rs();}
+    if(page==='capital')rcap();if(page==='timeline'){rt();rr();rl();rs();}
 }
 document.getElementById('mainNav').addEventListener('click',function(e){const b=e.target.closest('button');if(b&&b.dataset.page)sp(b.dataset.page);});
 function toggleSection(id){const s=document.getElementById('sec-'+id);const c=document.querySelector('.collapsible[onclick="toggleSection(\''+id+'\')"]');if(s.classList.contains('open')){s.classList.remove('open');c.classList.remove('open');}else{s.classList.add('open');c.classList.add('open');}}
 
 function getMonthStr(date){return date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0');}
-function getWeekRange(date){
-    const d=new Date(date);const day=d.getDay();const diff=d.getDate()-day+(day===0?-6:1);
-    const monday=new Date(d.setDate(diff));monday.setHours(0,0,0,0);
-    const sunday=new Date(monday);sunday.setDate(monday.getDate()+6);sunday.setHours(23,59,59,999);
-    return {start:monday,end:sunday};
+
+// --- AUTOMATIC CAPITAL ENGINE ---
+function recalculateCapital(){
+    const startCash = app.capital.startingCash || 0;
+    const startSav = app.capital.startingSavings || 0;
+    const totalProfit = app.deals.filter(d=>d.status==='Closed').reduce((s,d)=>s+(d.profit||0),0);
+    const totalExpenses = app.expenses.reduce((s,e)=>s+e.amount,0);
+    const currentCash = startCash + totalProfit - totalExpenses;
+    app.capital.cash = Math.max(0, currentCash);
+    app.capital.savings = startSav;
+    const invVal = app.inventory.filter(i=>i.status==='Active').reduce((s,i)=>s+(i.cost*(i.quantity||1)),0);
+    app.capital.inventoryValue = invVal;
+    // Snapshots for history
+    const today = new Date().toISOString().slice(0,10);
+    if(!app.capitalHistory) app.capitalHistory = [];
+    const last = app.capitalHistory[app.capitalHistory.length-1];
+    if(!last || last.date!==today){
+        app.capitalHistory.push({date:today,netWorth:nw()});
+    }
 }
 
+function setCapitalBase(){
+    app.capital.startingCash = Number(document.getElementById('capitalStartingCash').value)||0;
+    app.capital.startingSavings = Number(document.getElementById('capitalStartingSavings').value)||0;
+    recalculateCapital();
+    save();
+    renderAll();
+    toast('✅ Base set & capital updated!');
+}
+
+// --- MODALS & STATS ---
 function calcHealthScore(){
     let s=50;const net=nw();const c=app.capital;const now=new Date();const tm=getMonthStr(now);
     if(net>0)s+=Math.min(Math.round(net/10000),20);else if(net<0)s-=Math.min(Math.round(Math.abs(net)/10000),20);
-    if(c.emergencyFund>0)s+=10;
+    if(c.savings>0)s+=10;
     const mDeals=app.deals.filter(d=>d.date&&d.date.startsWith(tm)&&d.status==='Closed');const mRev=mDeals.reduce((s,d)=>s+(d.profit||0),0);
     const mExp=app.expenses.filter(e=>e.date&&e.date.startsWith(tm)).reduce((s,e)=>s+e.amount,0);
     if(mRev>mExp)s+=15;
@@ -216,9 +264,9 @@ function showScoreBreakdown(){
     const sc=getScoreBreakdown();let html='<div class="flex-between mb-3"><h3 class="font-bold">CEO Score Breakdown</h3><button onclick="closeModal()" style="background:none;border:none;color:var(--text2);font-size:1.5rem;">×</button></div><div class="text-xl font-bold text-center mb-3">'+sc.total+'<span class="text-sm text-gray">/100</span></div>';
     for(let [key,val] of Object.entries(sc.breakdown)){html+='<div class="flex-between mt-2"><span>'+key+'</span><div class="badge '+(val>6?'badge-green':val>4?'badge-yellow':'badge-red')+'">'+val+'/10</div></div>';}
     let insight='Keep up the good work!';
-    if(sc.breakdown['Expense Control']<5) insight='🚀 Reduce transport or food costs by 20% to hit 90.';
-    else if(sc.breakdown['Cash Reserve']<5) insight='🚀 Stash 2 months of expenses in emergency fund.';
-    else if(sc.breakdown['Inventory Turnover']<5) insight='🚀 Sell slow-moving inventory (over 30 days).';
+    if(sc.breakdown['Expense Control']<5) insight='🚀 Try to reduce transport or supplies costs this month.';
+    else if(sc.breakdown['Cash Reserve']<5) insight='🚀 Stash some savings for slow sales days.';
+    else if(sc.breakdown['Inventory Turnover']<5) insight='🚀 Sell slow-moving products (over 30 days).';
     html+='<div class="focus-box mt-3"><span class="text-sm text-blue">'+insight+'</span></div>';
     document.getElementById('modalContent').innerHTML=html;document.getElementById('genericModal').style.display='flex';
 }
@@ -229,8 +277,18 @@ function openStatModal(type){
     else if(type==='expenses'){items=app.expenses.filter(e=>e.date&&e.date.startsWith(tm));title='This Month Expenses';}
     else if(type==='profit'){const rev=app.deals.filter(d=>d.date&&d.date.startsWith(tm)&&d.status==='Closed').reduce((s,d)=>s+(d.profit||0),0);const exp=app.expenses.filter(e=>e.date&&e.date.startsWith(tm)).reduce((s,e)=>s+e.amount,0);items=[{profit:rev-exp,desc:'Net Profit',date:now.toISOString()}];title='Net Profit';}
     else if(type==='networth'){title='Net Worth Breakdown';}
-    else if(type==='cash'){items=[{amt:app.capital.cash,desc:'Available Cash'}];title='Cash';}
     else if(type==='inventory'){items=app.inventory.filter(i=>i.status==='Active');title='Active Inventory';}
+    else if(type==='cash'){
+        title='Cash Breakdown';
+        let html='<div class="flex-between mb-3"><h3 class="font-bold">Cash on Hand</h3><button onclick="closeModal()" style="background:none;border:none;color:var(--text2);font-size:1.5rem;">×</button></div>';
+        html+='<div class="flex-between text-sm mt-1"><span>Starting Cash:</span><span>'+fm(app.capital.startingCash)+'</span></div>';
+        html+='<div class="flex-between text-sm mt-1 text-green"><span>+ Total Profit:</span><span>+'+fm(app.deals.filter(d=>d.status==='Closed').reduce((s,d)=>s+(d.profit||0),0))+'</span></div>';
+        html+='<div class="flex-between text-sm mt-1 text-red"><span>- Total Expenses:</span><span>-'+fm(app.expenses.reduce((s,e)=>s+e.amount,0))+'</span></div>';
+        html+='<hr><div class="flex-between font-bold text-lg mt-1"><span>= Current Cash:</span><span class="text-green">'+fm(app.capital.cash)+'</span></div>';
+        document.getElementById('modalContent').innerHTML=html;document.getElementById('genericModal').style.display='flex'; return;
+    }
+    else if(type==='savings'){title='Savings'; items=[{desc:'Current Savings', amt:app.capital.savings}];}
+
     let html='<div class="flex-between mb-3"><h3 class="font-bold">'+title+'</h3><button onclick="closeModal()" style="background:none;border:none;color:var(--text2);font-size:1.5rem;">×</button></div>';
     if(items.length){items.forEach(i=>{if(i.desc)html+='<div class="flex-between text-sm" style="line-height:1.8;"><span>'+i.desc+'</span><span>'+(i.profit?fm(i.profit):i.amt?fm(i.amt):fm(i.sellPrice||0))+'</span></div>';});}
     else html+='<p class="text-gray text-xs text-center">No entries for this month.</p>';
@@ -252,8 +310,9 @@ function getAlerts(){
 function rh(){
     document.getElementById('headerDate').textContent=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
     const c=app.capital;const net=nw();const nwEl=document.getElementById('homeNW');nwEl.textContent=fm(net);
-    document.getElementById('homeCash').textContent=fm(c.cash);document.getElementById('homeInventory').textContent=fm(c.inventoryValue);
-    document.getElementById('homeAssets').textContent=fm(ta());document.getElementById('homeLiabilities').textContent=fm(tl());
+    document.getElementById('homeCash').textContent=fm(c.cash);document.getElementById('homeSavings').textContent=fm(c.savings);
+    document.getElementById('homeInventory').textContent=fm(c.inventoryValue);
+    document.getElementById('homeLiabilities').textContent=fm(tl());
     const sc=calcHealthScore();document.getElementById('homeScore').textContent=sc;
     document.getElementById('scoreLevel').textContent=sc>=80?'Excellent':sc>=55?'Good':sc>=30?'Needs Work':'Critical';
     const now=new Date();const tm=getMonthStr(now);
@@ -262,14 +321,26 @@ function rh(){
     document.getElementById('homeRev').textContent='+'+fm(mRev);document.getElementById('homeExp').textContent='-'+fm(mExp);
     const ne=document.getElementById('homeNet');ne.textContent=(mNet>=0?'+':'')+fm(mNet);ne.style.color=mNet>=0?'var(--green)':'var(--red)';
     const alerts=getAlerts();document.getElementById('homeAlerts').innerHTML=alerts.map(a=>'<div class="flex-between text-xs mb-1" style="line-height:1.8;"><span>'+a+'</span></div>').join('');
-    const recent=[...app.deals.map(d=>({t:'Deal: '+d.customer+' '+d.status,d:d.date})),...app.inventory.map(i=>({t:'Stock: '+i.product,d:i.purchaseDate})),...app.expenses.map(e=>({t:'Expense: '+e.description,d:e.date}))].sort((a,b)=>new Date(b.d||0)-new Date(a.d||0)).slice(0,5);
+    const recent=[...app.deals.map(d=>({t:'Sale: '+d.customer+' '+d.status,d:d.date})),...app.inventory.map(i=>({t:'Stock: '+i.product,d:i.purchaseDate})),...app.expenses.map(e=>({t:'Expense: '+e.description,d:e.date}))].sort((a,b)=>new Date(b.d||0)-new Date(a.d||0)).slice(0,5);
     document.getElementById('homeRecent').innerHTML=recent.length?recent.map(r=>'<div class="row-item"><span class="rt">'+r.t+'</span><div class="rm">'+(r.d?.slice(0,10)||'')+'</div></div>').join(''):'<p class="text-gray text-xs text-center">Start logging</p>';
 }
+
+function rcap(){
+    document.getElementById('capitalStartingCash').value = app.capital.startingCash||0;
+    document.getElementById('capitalStartingSavings').value = app.capital.startingSavings||0;
+    document.getElementById('capitalDisplayCash').textContent = fm(app.capital.cash);
+    document.getElementById('capitalDisplayInv').textContent = fm(app.capital.inventoryValue);
+    document.getElementById('capitalDisplaySav').textContent = fm(app.capital.savings);
+    const net=nw(); const nwEl=document.getElementById('capitalDisplayNW'); nwEl.textContent=fm(net); nwEl.style.color=net>=0?'var(--green)':'var(--red)';
+    const hist=app.capitalHistory||[]; let hh='';
+    hist.slice().reverse().slice(0,6).forEach(h=>{hh+='<div class="flex-between text-xs mb-1" style="line-height:1.8;"><span>'+h.date+'</span><span class="'+(h.netWorth>=0?'text-green':'text-red')+' font-bold">'+fm(h.netWorth)+'</span></div>';});
+    document.getElementById('capitalHistoryList').innerHTML=hh||'<p class="text-gray text-xs text-center">Save a snapshot to see your trend</p>';
+}
+
 let df='all';function filterD(f){df=f;rd();}
 function rd(){const fd=app.decisions.filter(d=>df==='all'?true:d.status===df);document.querySelectorAll('#page-decisions .chip').forEach(c=>c.classList.remove('active'));const ac=document.querySelector('#page-decisions .chip[onclick="filterD(\''+df+'\')"]');if(ac)ac.classList.add('active');document.getElementById('decisionList').innerHTML=fd.length?fd.map(d=>'<div class="row-item" onclick="openForm(\'decision\',\''+d.id+'\')"><div class="flex-between"><span class="rt">'+d.title+'</span><span class="badge '+(d.finalDecision==='BUY'?'badge-green':d.finalDecision==='WAIT'?'badge-yellow':'badge-red')+'">'+d.finalDecision+'</span></div><div class="rm">'+d.status+' · '+fm(d.capitalRequired)+' · '+(d.date?.slice(0,10)||'')+'</div></div>').join(''):'<p class="text-gray text-xs text-center">No decisions</p>';}
 
 function ri(){
-    const soldItems=app.inventory.filter(i=>i.status==='Sold');const totalSold=soldItems.length;
     document.getElementById('inventoryList').innerHTML=app.inventory.length?app.inventory.map(i=>{
         const days = i.purchaseDate?Math.round((Date.now()-new Date(i.purchaseDate).getTime())/86400000):0;
         const profit = i.sellPrice - i.cost; const margin = i.cost>0?Math.round((profit/i.cost)*100):0;
@@ -284,7 +355,8 @@ function rdl(){document.getElementById('dealList').innerHTML=app.deals.length?ap
 
 let ef='all';function filterE(f){ef=f;re();}
 function re(){const fe=app.expenses.filter(e=>ef==='all'?true:e.type===ef).sort((a,b)=>new Date(b.date)-new Date(a.date));document.querySelectorAll('#page-business .chip').forEach(c=>c.classList.remove('active'));const ac=document.querySelector('#page-business .chip[onclick="filterE(\''+ef+'\')"]');if(ac)ac.classList.add('active');document.getElementById('expenseList').innerHTML=fe.length?fe.map(e=>'<div class="row-item" onclick="openForm(\'expense\',\''+e.id+'\')"><div class="flex-between"><span class="rt">'+(e.description||e.category)+'</span><span class="text-red font-bold">-'+fm(e.amount)+'</span></div><div class="rm">'+e.type+' · '+e.category+' · '+(e.paymentMethod||'')+'</div></div>').join(''):'<p class="text-gray text-xs text-center">No expenses</p>';
-    const now=new Date();const tm=getMonthStr(now);const me=app.expenses.filter(e=>e.date&&e.date.startsWith(tm));const bc={rent:0,transport:0,data:0,marketing:0,supplies:0,salary:0,other:0};const pc={food:0,transport:0,data:0,random:0};
+    const now=new Date();const tm=getMonthStr(now);const me=app.expenses.filter(e=>e.date&&e.date.startsWith(tm));
+    const bc={rent:0,transport:0,data:0,marketing:0,supplies:0,salary:0,other:0};const pc={food:0,transport:0,data:0,random:0};
     me.forEach(e=>{if(e.type==='business'&&bc[e.category]!==undefined)bc[e.category]+=e.amount;if(e.type==='personal'&&pc[e.category]!==undefined)pc[e.category]+=e.amount;});
     const bt=Object.values(bc).reduce((a,b)=>a+b,0);const pt=Object.values(pc).reduce((a,b)=>a+b,0);
     let h='<div class="text-xs text-gray font-bold mb-1">BUSINESS ('+fm(bt)+')</div>';Object.entries(bc).forEach(([k,v])=>{h+='<div class="flex-between text-xs" style="line-height:1.8;"><span>'+k+'</span><span>'+fm(v)+'</span></div>';});
@@ -307,25 +379,30 @@ function autoGenerateReview(){
     const obj={date:now.toISOString().slice(0,10),whatWorked:'Revenue: '+fm(rev)+'\nBest Product: '+(bestP?bestP[0]:'N/A'),whatFailed:'Worst Decision: '+(worstD.length?worstD[0].title:'None'),whatLeaked:'Money Wasted: '+fm(wasted)+'\nExpenses: '+fm(exp),whatImprove:'Goals: '+goals+'\nInventory Age: '+Math.round(invAge)+' days'};
     openForm('review', null, obj);
 }
-
+function getWeekRange(date){
+    const d=new Date(date);const day=d.getDay();const diff=d.getDate()-day+(day===0?-6:1);
+    const monday=new Date(d.setDate(diff));monday.setHours(0,0,0,0);
+    const sunday=new Date(monday);sunday.setDate(monday.getDate()+6);sunday.setHours(23,59,59,999);
+    return {start:monday,end:sunday};
+}
 function rr(){document.getElementById('reviewList').innerHTML=app.reviews.length?app.reviews.slice().reverse().map(r=>'<div class="card"><div class="flex-between mb-2"><span class="font-bold text-sm">Week of '+(r.date?.slice(0,10)||'')+'</span></div><div class="flex-row flex-wrap text-xs"><span class="text-green">✅ Worked</span><span class="text-red">❌ Failed</span><span class="text-yellow">💰 Leak</span></div><p class="text-xs text-gray mt-1">'+(r.whatWorked||'').slice(0,40)+'...</p></div>').join(''):'<p class="text-gray text-sm text-center">No reviews yet.</p>';}
 
 function rt(){
     let events=[];app.inventory.forEach(i=>{if(i.purchaseDate){events.push({date:i.purchaseDate,text:'📦 Bought '+i.product+' ('+fm(i.cost)+')'});}});
-    app.deals.forEach(d=>{if(d.date){events.push({date:d.date,text:'🤝 '+d.status+' deal: '+d.customer+' ('+fm(d.sellPrice)+')'});}});
+    app.deals.forEach(d=>{if(d.date){events.push({date:d.date,text:'🤝 '+d.status+' sale: '+d.customer+' ('+fm(d.sellPrice)+')'});}});
     app.decisions.forEach(d=>{if(d.date){events.push({date:d.date,text:'🧠 Decision: '+d.title+' → '+d.finalDecision});}});
     app.reviews.forEach(r=>{if(r.date){events.push({date:r.date,text:'📝 Weekly review logged'});}});
     events.sort((a,b)=>new Date(b.date)-new Date(a.date));
-    document.getElementById('timelineList').innerHTML=events.length?events.map(e=>`<div class="row-item"><div class="flex-between"><span class="rt">${e.text}</span><span class="text-xs text-gray">${e.date}</span></div></div>`).join(''):'<p class="text-gray text-xs text-center">Your business story starts here.</p>';
+    document.getElementById('timelineList').innerHTML=events.length?events.map(e=>`<div class="row-item"><div class="flex-between"><span class="rt">${e.text}</span><span class="text-xs text-gray">${e.date}</span></div></div>`).join(''):'<p class="text-gray text-xs text-center">Start your business story!</p>';
 }
 
 let lf='all';function filterL(f){lf=f;rl();}
-function rl(){const q=document.getElementById('lessonSearch').value.toLowerCase();const items=[...app.deals.map(d=>({...d,type:'selling',lesson:d.lesson||d.feedback})),...app.decisions.map(d=>({...d,type:'buying',lesson:d.lessonLearned})),...app.reviews.map(r=>({...r,type:'finance',lesson:(r.whatFailed||'')+' '+(r.whatImprove||'')}))];const filtered=items.filter(i=>{const str=JSON.stringify(i).toLowerCase();const matchQ=!q||str.includes(q);const matchF=lf==='all'||i.type===lf;return matchQ&&matchF;});document.querySelectorAll('#lessonFilters .chip').forEach(c=>c.classList.remove('active'));const ac=document.querySelector('#lessonFilters .chip[onclick="filterL(\''+lf+'\')"]');if(ac)ac.classList.add('active');document.getElementById('lessonList').innerHTML=filtered.length?filtered.map(i=>{let title='',lesson='',date='';if(i.customer){title='Deal: '+(i.customer||'Sale');lesson=i.lesson||'';date=i.date;}else if(i.title){title='Decision: '+i.title;lesson=i.lesson||'';date=i.date;}else{title='Weekly Review';lesson=i.lesson||'';date=i.date;}return'<div class="card"><span class="rt">'+title+'</span><div class="rm">'+(date?.slice(0,10)||'')+' · <span class="badge badge-blue">'+i.type+'</span></div><p class="text-sm mt-2" style="line-height:1.6;">'+(lesson||'No lesson recorded')+'</p></div>';}).join(''):'<p class="text-gray text-sm text-center">'+(q||lf!=='all'?'No results found.':'No lessons yet.')+'</p>';}
+function rl(){const q=document.getElementById('lessonSearch').value.toLowerCase();const items=[...app.deals.map(d=>({...d,type:'selling',lesson:d.lesson||d.feedback})),...app.decisions.map(d=>({...d,type:'buying',lesson:d.lessonLearned})),...app.reviews.map(r=>({...r,type:'finance',lesson:(r.whatFailed||'')+' '+(r.whatImprove||'')}))];const filtered=items.filter(i=>{const str=JSON.stringify(i).toLowerCase();const matchQ=!q||str.includes(q);const matchF=lf==='all'||i.type===lf;return matchQ&&matchF;});document.querySelectorAll('#lessonFilters .chip').forEach(c=>c.classList.remove('active'));const ac=document.querySelector('#lessonFilters .chip[onclick="filterL(\''+lf+'\')"]');if(ac)ac.classList.add('active');document.getElementById('lessonList').innerHTML=filtered.length?filtered.map(i=>{let title='',lesson='',date='';if(i.customer){title='Sale: '+(i.customer||'Sale');lesson=i.lesson||'';date=i.date;}else if(i.title){title='Decision: '+i.title;lesson=i.lesson||'';date=i.date;}else{title='Weekly Review';lesson=i.lesson||'';date=i.date;}return'<div class="card"><span class="rt">'+title+'</span><div class="rm">'+(date?.slice(0,10)||'')+' · <span class="badge badge-blue">'+i.type+'</span></div><p class="text-sm mt-2" style="line-height:1.6;">'+(lesson||'No lesson recorded')+'</p></div>';}).join(''):'<p class="text-gray text-sm text-center">'+(q||lf!=='all'?'No results found.':'No lessons yet.')+'</p>';}
 
 function rs(){const n=document.getElementById('backupNote');if(!app.lastBackup)n.textContent='⚠ No backup yet.';else{const d=Math.floor((Date.now()-new Date(app.lastBackup).getTime())/86400000);n.textContent=d>7?'⚠ Last backup: '+d+' days ago':'✅ Backed up '+d+' days ago';}}
 function exportData(){const b=new Blob([JSON.stringify(app)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='tradeos_'+new Date().toISOString().slice(0,10)+'.json';a.click();app.lastBackup=new Date().toISOString();save();rs();toast('📥 Exported');}
 function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=function(ev){try{const d=JSON.parse(ev.target.result);if(d.capital&&d.decisions){if(confirm('Replace all data?')){app=d;save();renderAll();toast('📤 Imported');}}else toast('❌ Invalid');}catch(x){toast('❌ Invalid');}};r.readAsText(f);e.target.value='';}
-function resetAll(){if(confirm('Delete ALL data?')){app={capital:{cash:0,emergencyFund:0,inventoryValue:0,receivables:0,otherAssets:0,payables:0,liabilities:0},capitalHistory:[],decisions:[],inventory:[],deals:[],expenses:[],reviews:[],lastBackup:null};save();renderAll();toast('🗑 Reset');}}
+function resetAll(){if(confirm('Delete ALL data?')){app={capital:{cash:0,savings:0,startingCash:0,startingSavings:0,inventoryValue:0,receivables:0,otherAssets:0,payables:0,liabilities:0},capitalHistory:[],decisions:[],inventory:[],deals:[],expenses:[],reviews:[],lastBackup:null};save();renderAll();toast('🗑 Reset');}}
 
 let eid=null;let ft='';
 function openForm(type,id,prefill=null){
@@ -335,7 +412,7 @@ function openForm(type,id,prefill=null){
     else if(type==='inventory'){const d=id?app.inventory.find(x=>x.id===id):(prefill||{});const dt=d||{product:'',quantity:1,cost:0,sellPrice:0,status:'Active',supplier:'',purchaseDate:new Date().toISOString().slice(0,10)};
     h='<div class="flex-between mb-3"><h3 class="font-bold">'+(d.id?'Edit':'Add')+' Stock</h3><button onclick="closeModal()" style="background:none;border:none;color:var(--text2);font-size:1.5rem;">×</button></div><label>Product *</label><input type="text" id="fProduct" value="'+dt.product+'"><div class="grid-3 mt-2"><div><label>Qty</label><input type="number" id="fQty" value="'+dt.quantity+'"></div><div><label>Cost</label><input type="number" id="fCost" value="'+dt.cost+'"></div><div><label>Sell</label><input type="number" id="fSell" value="'+dt.sellPrice+'"></div></div><label class="mt-2">Supplier</label><input type="text" id="fSupplier" value="'+(dt.supplier||'')+'"><label class="mt-2">Purchase Date</label><input type="date" id="fPurchaseDate" value="'+(dt.purchaseDate||dt.date||'')+'"><label class="mt-2">Status</label><select id="fStatus">'+['Active','Sold','Returned'].map(s=>'<option '+(dt.status===s?'selected':'')+'>'+s+'</option>').join('')+'</select><button class="btn btn-primary mt-3" onclick="saveForm()">Save</button>';}
     else if(type==='deal'){const d=id?app.deals.find(x=>x.id===id):(prefill||{});const dt=d||{customer:'',product:'',buyPrice:0,sellPrice:0,status:'Pending',paymentMethod:'Cash',feedback:'',date:new Date().toISOString().slice(0,10),lesson:''};
-    h='<div class="flex-between mb-3"><h3 class="font-bold">'+(d.id?'Edit':'New')+' Deal</h3><button onclick="closeModal()" style="background:none;border:none;color:var(--text2);font-size:1.5rem;">×</button></div><label>Customer</label><input type="text" id="fCustomer" value="'+dt.customer+'"><label class="mt-2">Product</label><select id="fProductSelect"><option value="">Manual entry</option>'+app.inventory.filter(i=>i.status==='Active').map(i=>'<option value="'+i.product+'" '+(dt.product===i.product?'selected':'')+'>'+i.product+' ('+(i.quantity||1)+' left)</option>').join('')+'</select><input type="text" id="fProduct" value="'+dt.product+'" class="mt-1"><div class="grid-2 mt-2"><div><label>Buy Price</label><input type="number" id="fBuy" value="'+dt.buyPrice+'"></div><div><label>Sell Price</label><input type="number" id="fSell" value="'+dt.sellPrice+'"></div></div><label class="mt-2">Payment</label><select id="fPayment">'+['Cash','Bank','POS','Transfer'].map(p=>'<option '+(dt.paymentMethod===p?'selected':'')+'>'+p+'</option>').join('')+'</select><label class="mt-2">Status</label><select id="fStatus">'+['Pending','Closed','Failed'].map(s=>'<option '+(dt.status===s?'selected':'')+'>'+s+'</option>').join('')+'</select><label class="mt-2">Feedback</label><textarea id="fFeedback" rows="2">'+(dt.feedback||'')+'</textarea><label class="mt-2">Lesson</label><textarea id="fLesson" rows="2">'+(dt.lesson||'')+'</textarea><button class="btn btn-primary mt-3" onclick="saveForm()">Save</button>';setTimeout(()=>{const ps=document.getElementById('fProductSelect');if(ps)ps.addEventListener('change',function(){document.getElementById('fProduct').value=this.value;});},50);}
+    h='<div class="flex-between mb-3"><h3 class="font-bold">'+(d.id?'Edit':'New')+' Sale</h3><button onclick="closeModal()" style="background:none;border:none;color:var(--text2);font-size:1.5rem;">×</button></div><label>Customer</label><input type="text" id="fCustomer" value="'+dt.customer+'"><label class="mt-2">Product</label><select id="fProductSelect"><option value="">Manual entry</option>'+app.inventory.filter(i=>i.status==='Active').map(i=>'<option value="'+i.product+'" '+(dt.product===i.product?'selected':'')+'>'+i.product+' ('+(i.quantity||1)+' left)</option>').join('')+'</select><input type="text" id="fProduct" value="'+dt.product+'" class="mt-1"><div class="grid-2 mt-2"><div><label>Buy Price</label><input type="number" id="fBuy" value="'+dt.buyPrice+'"></div><div><label>Sell Price</label><input type="number" id="fSell" value="'+dt.sellPrice+'"></div></div><label class="mt-2">Payment</label><select id="fPayment">'+['Cash','Bank','POS','Transfer'].map(p=>'<option '+(dt.paymentMethod===p?'selected':'')+'>'+p+'</option>').join('')+'</select><label class="mt-2">Status</label><select id="fStatus">'+['Pending','Closed','Failed'].map(s=>'<option '+(dt.status===s?'selected':'')+'>'+s+'</option>').join('')+'</select><label class="mt-2">Feedback</label><textarea id="fFeedback" rows="2">'+(dt.feedback||'')+'</textarea><label class="mt-2">Lesson</label><textarea id="fLesson" rows="2">'+(dt.lesson||'')+'</textarea><button class="btn btn-primary mt-3" onclick="saveForm()">Save</button>';setTimeout(()=>{const ps=document.getElementById('fProductSelect');if(ps)ps.addEventListener('change',function(){document.getElementById('fProduct').value=this.value;});},50);}
     else if(type==='expense'){const d=id?app.expenses.find(x=>x.id===id):(prefill||{});const dt=d||{description:'',amount:0,type:'business',category:'other',paymentMethod:'Cash',date:new Date().toISOString().slice(0,10)};
     h='<div class="flex-between mb-3"><h3 class="font-bold">'+(d.id?'Edit':'Log')+' Expense</h3><button onclick="closeModal()" style="background:none;border:none;color:var(--text2);font-size:1.5rem;">×</button></div><label>Description</label><input type="text" id="fDesc" value="'+dt.description+'"><label class="mt-2">Amount</label><input type="number" id="fAmount" value="'+dt.amount+'"><label class="mt-2">Type</label><select id="fType" onchange="uec()">'+['business','personal'].map(t=>'<option '+(dt.type===t?'selected':'')+'>'+t+'</option>').join('')+'</select><label class="mt-2">Category</label><select id="fCategory"></select><label class="mt-2">Payment</label><select id="fPayment">'+['Cash','Bank','POS','Transfer'].map(p=>'<option '+(dt.paymentMethod===p?'selected':'')+'>'+p+'</option>').join('')+'</select><button class="btn btn-primary mt-3" onclick="saveForm()">Save</button>';setTimeout(()=>{document.getElementById('fType').value=dt.type;uec();document.getElementById('fCategory').value=dt.category;},50);}
     else if(type==='review'){const d=id?app.reviews.find(x=>x.id===id):(prefill||{});const dt=d||{date:new Date().toISOString().slice(0,10),whatWorked:'',whatFailed:'',whatLeaked:'',whatImprove:''};
@@ -352,9 +429,15 @@ function saveForm(){
     else if(ft==='deal'){const prodName=g('fProduct');const obj={customer:g('fCustomer'),product:prodName,buyPrice:gn('fBuy'),sellPrice:gn('fSell'),profit:gn('fSell')-gn('fBuy'),status:g('fStatus'),paymentMethod:g('fPayment'),feedback:g('fFeedback'),date:new Date().toISOString().slice(0,10),lesson:g('fLesson')};if(!obj.customer&&!obj.product){toast('Customer or product required');return;}if(eid){const i=app.deals.findIndex(x=>x.id===eid);if(i>=0)app.deals[i]={...app.deals[i],...obj};}else{app.deals.unshift({...obj,id:gid()});if(obj.status==='Closed'&&prodName){const invItem=app.inventory.find(i=>i.product===prodName&&i.status==='Active');if(invItem){invItem.quantity=(invItem.quantity||1)-1;if(invItem.quantity<=0)invItem.status='Sold';}}}}
     else if(ft==='expense'){const obj={description:g('fDesc'),amount:gn('fAmount'),type:g('fType'),category:g('fCategory'),paymentMethod:g('fPayment'),date:new Date().toISOString().slice(0,10)};if(!obj.amount){toast('Amount required');return;}if(eid){const i=app.expenses.findIndex(x=>x.id===eid);if(i>=0)app.expenses[i]={...app.expenses[i],...obj};}else{app.expenses.unshift({...obj,id:gid()});}}
     else if(ft==='review'){const obj={date:new Date().toISOString().slice(0,10),whatWorked:g('fWorked'),whatFailed:g('fFailed'),whatLeaked:g('fLeaked'),whatImprove:g('fImprove')};if(eid){const i=app.reviews.findIndex(x=>x.id===eid);if(i>=0)app.reviews[i]={...app.reviews[i],...obj};}else{app.reviews.unshift({...obj,id:gid()});}}
-    save();closeModal();renderAll();toast('✅ Saved');
+
+    // --- DYNAMIC CAPITAL TRIGGER ---
+    recalculateCapital();
+    save();
+    closeModal();
+    renderAll();
+    toast('✅ Saved & Capital Updated!');
 }
-function renderAll(){rh();rd();ri();rdl();re();rt();rr();rl();rs();}
+function renderAll(){rh();rd();ri();rdl();re();rcap();rt();rr();rl();rs();}
 load();renderAll();sp('home');
 </script>
 </body>
